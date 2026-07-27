@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use this guide in your work, please cite it as below."
+title: "Android Keyboard Design Guide: 3D & Personalization"
+type: software
+authors:
+  - name: "Made in Jurgistan"
+    website: "https://Made-in-Jurgistan.github.io"
+repository-code: "https://github.com/Made-in-Jurgistan/android-keyboard-design-guide-3d-personalization-2026"
+url: "https://Made-in-Jurgistan.github.io/android-keyboard-design-guide-3d-personalization/"
+version: "2026.2.0"
+date-released: "2026-01-15"
+license: CC-BY-SA-4.0
+keywords:
+  - Android keyboard
+  - 3D rendering
+  - OpenGL ES
+  - Filament
+  - PBR materials
+  - GLSL shaders
+  - custom themes
+  - game engine bridge
+  - personalization
+abstract: "The extension volume for the Android Keyboard Design Guide. Covers OpenGL ES 3D key rendering, Filament PBR materials, GLSL shaders, custom themes, and game engine bridges."
