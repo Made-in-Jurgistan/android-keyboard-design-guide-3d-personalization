@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -29,7 +29,7 @@
     />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://Made-in-Jurgistan.github.io/android-keyboard-design-guide-3d-personalization/" />
-    <meta property="og:site_name" content="Android Keyboard Design Guide" />
+    <meta property="og:site_name" content="Android Keyboard Design Guide: 3D &amp; Personalization" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:image" content="https://Made-in-Jurgistan.github.io/android-keyboard-design-guide-3d-personalization/cover.png" />
     <meta property="article:published_time" content="2026-01-15T00:00:00Z" />
@@ -120,7 +120,7 @@
         --ink-700: #46413c;
         --ink-600: #5a534c;
         --ink-500: #6e665e;
-        --ink-400: #8d857c;
+        --ink-400: #6e665e;
         --ink-300: #aca49b;
         --ink-200: #ccc5bc;
         --ink-100: #e4ddd4;
@@ -130,6 +130,7 @@
            Provide: main, light, bg (light tint), bd (border shade). */
         --accent: #b25a1a;
         --accent-lt: #cd6e2a;
+  --accent-ink: #9c4d12;
         --accent-bg: #fdf2e6;
         --accent-bd: #ecc08a;
 
@@ -142,7 +143,7 @@
         --beginner-bg: #e9f6ee;
         --beginner-bd: #9ed4b4;
 
-        --intermediate: #b25a1a;
+        --intermediate: #9c4d12;
         --inter-bg: #fdf2e6;
         --inter-bd: #ecc08a;
 
@@ -156,8 +157,8 @@
         --api-32: #3b0764;
         --api-33: #6d28d9;
         --api-34: #7c3aed;
-        --api-35: #8b5cf6;
-        --api-36: #a78bfa;
+        --api-35: #c4b5fd;
+        --api-36: #ddd6fe;
 
         /* ── Semantic ── */
         --success: #2a7a48;
@@ -170,12 +171,12 @@
         /* ── Code ── */
         --code-bg: #f0ebe2;
         --code-kw: #6b2d8b;
-        --code-fn: var(--accent);
-        --code-str: #2a7a48;
-        --code-cm: #8d857c;
-        --code-num: #b25a1a;
+        --code-fn: #9c4d12;
+        --code-str: #22693c;
+        --code-cm: #6e665e;
+        --code-num: #9c4d12;
         --code-ty: #1e5ea8;
-        --code-an: #0e896a;
+        --code-an: #0b6e55;
 
         /* ── Layout ── */
         --sidebar-w: 274px;
@@ -367,7 +368,7 @@
         margin-bottom: 7px;
         display: block;
       }
-      .sidebar-brand h2 {
+      .sidebar-brand .brand-title {
         font-family: var(--f-display);
         font-size: 14.5px;
         font-weight: 600;
@@ -520,7 +521,7 @@
       }
       .pill-accent {
         background: var(--accent-bg);
-        color: var(--accent);
+        color: var(--accent-ink);
         border: 1px solid var(--accent-bd);
       }
       .pill-muted {
@@ -607,6 +608,7 @@
       .api-chip.api-34 { background: var(--api-34); }
       .api-chip.api-35 { background: var(--api-35); }
       .api-chip.api-36 { background: var(--api-36); }
+.api-chip.api-35, .api-chip.api-36 { color: #2e1065; }
 
       /* ── Platform / Language Chips ── */
       .plat {
@@ -795,7 +797,7 @@
         color: var(--ink-700);
       }
       a {
-        color: var(--accent);
+        color: var(--accent-ink);
         text-decoration: none;
         transition: color 0.15s;
         text-underline-offset: 2px;
@@ -1130,7 +1132,7 @@
         color: var(--code-an);
       }
       .at {
-        color: var(--accent-lt);
+        color: #7a3b0b;
       }
       .tg {
         color: var(--code-kw);
@@ -1322,7 +1324,7 @@
         font-family: var(--f-mono);
         font-size: 18px;
         font-weight: 600;
-        color: var(--accent);
+        color: var(--accent-ink);
         line-height: 1;
       }
       .spec-label {
@@ -1476,7 +1478,7 @@
         line-height: 1.55;
       }
       .role-card a {
-        color: var(--accent);
+        color: var(--accent-ink);
         font-weight: 500;
       }
 
@@ -1679,17 +1681,16 @@
         text-align: right;
         padding: 1rem 0 0.25rem;
         font-size: 0.82rem;
-        opacity: 0.75;
       }
       .return-to-top a {
-        color: var(--accent);
+        color: var(--accent-ink);
         text-decoration: none;
       }
       .return-to-top a:hover {
         text-decoration: underline;
       }
       .return-to-top-link {
-        color: var(--accent);
+        color: var(--accent-ink);
         text-decoration: none;
       }
       .return-to-top-link:hover {
@@ -1814,28 +1815,24 @@
         margin-right: 2.5cm;
       }
 
-      /* ── Advanced Paged Media (requires Paged.js polyfill or WeasyPrint/Prince) ── */
+      /* ── Native paged media (Chrome 131+, Firefox, WeasyPrint, Prince) ── */
       @page chapter {
-        @top-center {
-          content: string(chapter-title);
-          font-size: 9pt;
-          color: #666;
-        }
         @bottom-center {
           content: counter(page) " / " counter(pages);
+          font-family: 'DM Sans', 'Segoe UI', Arial, sans-serif;
           font-size: 9pt;
           color: #666;
         }
         @bottom-right {
           content: "Android Keyboard Design Guide: 3D & Personalization";
+          font-family: 'DM Sans', 'Segoe UI', Arial, sans-serif;
           font-size: 8pt;
-          color: #999;
+          color: #6b6b6b;
         }
       }
       @media print {
         .chapter {
           page: chapter;
-          string-set: chapter-title content();
         }
         h1, h2, h3 {
           bookmark-level: none;
@@ -2195,7 +2192,7 @@
           background: Canvas;
           border-right: 1px solid CanvasText;
         }
-        .sidebar-brand h2,
+        .sidebar-brand .brand-title,
         .nav-group-label,
         .nav-group a {
           color: LinkText !important;
@@ -2234,6 +2231,17 @@
           content-visibility: visible;
         }
       }
+    
+      /* ── Reflow at 320 px (WCAG 1.4.10): long strings wrap instead of widening the page ── */
+      p code, li code, td code, th code, .callout-body, .callout-body code, .ref-list li, a.ext, .spec-note, .ch-desc {
+        overflow-wrap: anywhere;
+      }
+      .callout-body, .tool-card, .spec-card, .role-card { min-width: 0; }
+      p a, li a, td a { text-decoration: underline; text-underline-offset: 2px; }
+
+      /* ── WCAG 2.5.8 target size: in-page jump links get a 24 px hit area ── */
+      .return-to-top a, .back-to-top a, .return-to-top-link { display: inline-block; min-height: 24px; padding: 4px 6px; }
+      main li > a:only-child { display: inline-block; padding-block: 3px; }
     </style>
   </head>
   <body>
@@ -2256,7 +2264,7 @@
       <nav aria-label="Guide sections" class="sidebar" role="navigation" id="sidebar-nav">
         <div class="sidebar-brand">
           <span class="logo-mark">Made in Jurgistan</span>
-          <h2>Android Keyboard Design Guide<br />3D &amp; Personalization</h2>
+          <div class="brand-title">Android Keyboard Design Guide:<br />3D &amp; Personalization</div>
           <p class="edition">Complete Edition · 31 Sections</p>
         </div>
 
@@ -2329,7 +2337,7 @@
         <!-- COVER -->
         <header class="cover" id="cover">
           <p class="eyebrow">Complete Edition · 2026</p>
-          <h1>Android Keyboard Design Guide<br /><em>3D &amp; Personalization</em></h1>
+          <h1>Android Keyboard Design Guide:<br /><em>3D &amp; Personalization</em></h1>
           <p class="subtitle">
             A comprehensive companion to the Android Keyboard Design Guide. Covers every
             technique for building deeply customized keyboards — from OpenGL ES 3D rendering and
@@ -2496,7 +2504,7 @@
             available option against a set of practical criteria.
           </p>
 
-          <div class="table-wrap">
+          <div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable table">
             <table>
               <thead>
                 <tr>
@@ -2628,7 +2636,7 @@
             best reference for how real keyboards handle theming, layout, and rendering at scale.
           </p>
 
-          <div class="table-wrap">
+          <div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable table">
             <table>
               <thead>
                 <tr>
@@ -2732,7 +2740,7 @@
             without OpenGL.
           </p>
 
-          <pre><code><span class="code-lang">Kotlin</span><span class="cm">// From AnySoftKeyboard's theme extension pattern:
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="cm">// From AnySoftKeyboard's theme extension pattern:
 // 1. Each theme is a separate APK with its own drawable resources.
 // 2. The host keyboard loads theme resources via PackageManager.
 // 3. Key drawables follow the naming convention: key_normal.9.png, key_pressed.9.png</span>
@@ -2792,7 +2800,7 @@
           </p>
 
           <h3>OpenGL ES Version Matrix</h3>
-          <div class="table-wrap">
+          <div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable table">
             <table>
               <thead>
                 <tr>
@@ -2840,7 +2848,7 @@
             elements.
           </p>
 
-          <pre><code><span class="code-lang">GLSL</span><span class="cm">// Vertex shader — converting Android screen coords to OpenGL ES NDC
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">GLSL</span><code><span class="cm">// Vertex shader — converting Android screen coords to OpenGL ES NDC
 // Android: (0,0) top-left, Y down. OpenGL NDC: (-1,-1) bottom-left, Y up</span>
 <span class="kw">attribute</span> <span class="ty">vec4</span> aPosition;  <span class="cm">// x, y in Android screen space (pixels)</span>
 <span class="kw">uniform</span>   <span class="ty">vec2</span> uResolution; <span class="cm">// screen width, height</span>
@@ -2861,7 +2869,7 @@
             whole application.
           </p>
 
-          <pre><code><span class="code-lang">XML</span><span class="cm">&lt;!-- In AndroidManifest.xml, inside &lt;manifest&gt; --&gt;</span>
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">XML</span><code><span class="cm">&lt;!-- In AndroidManifest.xml, inside &lt;manifest&gt; --&gt;</span>
 <span class="tg">&lt;uses-feature</span>
     <span class="at">android:glEsVersion</span>=<span class="str">"0x00030000"</span>
     <span class="at">android:required</span>=<span class="str">"true"</span> <span class="tg">/&gt;</span>
@@ -2908,7 +2916,7 @@
           </p>
 
           <h3>Full Integration Skeleton</h3>
-          <pre><code><span class="code-lang">Kotlin</span><span class="cm">// Full GLSurfaceView IME integration — Kotlin</span>
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="cm">// Full GLSurfaceView IME integration — Kotlin</span>
 <span class="kw">class</span> <span class="ty">Keyboard3DService</span> : <span class="ty">InputMethodService</span>() {
 
     <span class="kw">private</span> <span class="kw">var</span> glView: <span class="ty">KeyboardGLSurfaceView</span>? = <span class="kw">null</span>
@@ -2964,7 +2972,7 @@
           </p>
 
           <h3>Renderer Implementation Skeleton</h3>
-          <pre><code><span class="code-lang">Kotlin</span><span class="kw">class</span> <span class="ty">KeyboardRenderer</span> : <span class="ty">GLSurfaceView.Renderer</span> {
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="kw">class</span> <span class="ty">KeyboardRenderer</span> : <span class="ty">GLSurfaceView.Renderer</span> {
 
     <span class="kw">private</span> <span class="kw">var</span> shaderProgram = <span class="num">0</span>
     <span class="kw">private</span> <span class="kw">var</span> keyVBO = <span class="num">0</span>
@@ -3061,7 +3069,7 @@
           </div>
 
           <h3>Procedural Bevel Key Mesh</h3>
-          <pre><code><span class="code-lang">Kotlin</span><span class="cm">/**
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="cm">/**
  * Generates vertex data for a single 3D beveled key.
  *
  * Layout: [x, y, z, nx, ny, nz, u, v] per vertex (8 floats)
@@ -3115,7 +3123,7 @@
             call, passing per-key data (position, color, pressed state) as instance attributes.
           </p>
 
-          <pre><code><span class="code-lang">Kotlin</span><span class="cm">// Instanced drawing — send all key transforms as a per-instance VBO</span>
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="cm">// Instanced drawing — send all key transforms as a per-instance VBO</span>
 <span class="cm">// instanceData: [x, y, width, height, r, g, b, isPressed] per key</span>
 
 <span class="kw">val</span> instanceCount = keyLayout.size
@@ -3164,7 +3172,7 @@ GLES30.<span class="fn">glDrawArraysInstanced</span>(
           </p>
 
           <h3>Vertex Shader — Key Surface with Press Animation</h3>
-          <pre><code><span class="code-lang">GLSL</span><span class="cm">// vertex_key.glsl  (GLSL ES 3.0 — #version 300 es)</span>
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">GLSL</span><code><span class="cm">// vertex_key.glsl  (GLSL ES 3.0 — #version 300 es)</span>
 <span class="tg">#version 300 es</span>
 
 <span class="kw">in</span> <span class="ty">vec3</span> aPosition;   <span class="cm">// Key vertex position (model space)</span>
@@ -3206,7 +3214,7 @@ GLES30.<span class="fn">glDrawArraysInstanced</span>(
 }</code></pre>
 
           <h3>Fragment Shader — Bevel Lighting + Material</h3>
-          <pre><code><span class="code-lang">GLSL</span><span class="cm">// fragment_key.glsl  (GLSL ES 3.0)</span>
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">GLSL</span><code><span class="cm">// fragment_key.glsl  (GLSL ES 3.0)</span>
 <span class="tg">#version 300 es</span>
 <span class="kw">precision</span> mediump <span class="ty">float</span>;
 
@@ -3290,7 +3298,7 @@ GLES30.<span class="fn">glDrawArraysInstanced</span>(
           </p>
 
           <h3>Lighting Model Comparison</h3>
-          <div class="table-wrap">
+          <div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable table">
             <table>
               <thead>
                 <tr>
@@ -3344,7 +3352,7 @@ GLES30.<span class="fn">glDrawArraysInstanced</span>(
             required.
           </p>
 
-          <pre><code><span class="code-lang">Kotlin</span><span class="cm">// Upload lighting uniforms from Kotlin (called once per frame or on theme change)</span>
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="cm">// Upload lighting uniforms from Kotlin (called once per frame or on theme change)</span>
 <span class="kw">fun</span> <span class="fn">setLighting</span>(program: <span class="ty">Int</span>, theme: <span class="ty">KeyboardTheme</span>) {
     <span class="cm">// Primary: upper-left directional (60% contribution)</span>
     GLES30.<span class="fn">glUniform3f</span>(
@@ -3391,7 +3399,7 @@ GLES30.<span class="fn">glDrawArraysInstanced</span>(
           </p>
 
           <h3>Gradle Dependencies</h3>
-          <pre><code><span class="code-lang">Gradle</span><span class="cm">// build.gradle.kts (Module) — Filament for Android</span>
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Gradle</span><code><span class="cm">// build.gradle.kts (Module) — Filament for Android</span>
 dependencies {
     <span class="kw">val</span> filamentVersion = <span class="str">"1.74.0"</span> <span class="cm">// Latest stable as of 2026 Q1</span>
 
@@ -3409,7 +3417,7 @@ dependencies {
 }</code></pre>
 
           <h3>Filament Engine Lifecycle in IME</h3>
-          <pre><code><span class="code-lang">Kotlin</span><span class="kw">class</span> <span class="ty">FilamentKeyboardService</span> : <span class="ty">InputMethodService</span>() {
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="kw">class</span> <span class="ty">FilamentKeyboardService</span> : <span class="ty">InputMethodService</span>() {
 
     <span class="kw">private</span> <span class="kw">lateinit var</span> engine: <span class="ty">Engine</span>
     <span class="kw">private</span> <span class="kw">lateinit var</span> renderer: <span class="ty">Renderer</span>
@@ -3515,7 +3523,7 @@ dependencies {
           </p>
 
           <h3>Material Source Files (.mat)</h3>
-          <pre><code><span class="code-lang">Filament Material</span><span class="cm">// key_standard.mat — Standard glossy plastic key material</span>
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Filament Material</span><code><span class="cm">// key_standard.mat — Standard glossy plastic key material</span>
 material {
     name : <span class="str">"KeyPlastic"</span>,
     shadingModel : lit,
@@ -3543,7 +3551,7 @@ fragment {
     }
 }</code></pre>
 
-          <pre><code><span class="code-lang">Filament Material</span><span class="cm">// key_metal.mat — Chrome / metallic action key</span>
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Filament Material</span><code><span class="cm">// key_metal.mat — Chrome / metallic action key</span>
 material {
     name : <span class="str">"KeyMetal"</span>,
     shadingModel : lit,
@@ -3564,14 +3572,14 @@ fragment {
 }</code></pre>
 
           <h3>Compiling with matc</h3>
-          <pre><code><span class="code-lang">Bash</span><span class="cm"># Run at build time (add to your build.gradle.kts as an exec task)</span>
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Bash</span><code><span class="cm"># Run at build time (add to your build.gradle.kts as an exec task)</span>
 <span class="cm"># matc ships with Filament — download from github.com/google/filament/releases</span>
 
 matc -a opengl -p mobile -o src/main/assets/key_standard.filamat key_standard.mat
 matc -a opengl -p mobile -o src/main/assets/key_metal.filamat key_metal.mat</code></pre>
 
           <h3>Loading and Assigning Materials in Kotlin</h3>
-          <pre><code><span class="code-lang">Kotlin</span><span class="kw">fun</span> <span class="fn">loadKeyMaterial</span>(engine: <span class="ty">Engine</span>, assetName: <span class="ty">String</span>): <span class="ty">MaterialInstance</span> {
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="kw">fun</span> <span class="fn">loadKeyMaterial</span>(engine: <span class="ty">Engine</span>, assetName: <span class="ty">String</span>): <span class="ty">MaterialInstance</span> {
     <span class="kw">val</span> bytes = assets.<span class="fn">open</span>(assetName).<span class="fn">readBytes</span>()
     <span class="kw">val</span> material = <span class="ty">Material</span>.<span class="fn">Builder</span>()
         .<span class="fn">payload</span>(bytes, bytes.size)
@@ -3624,14 +3632,14 @@ matc -a opengl -p mobile -o src/main/assets/key_metal.filamat key_metal.mat</cod
           </p>
 
           <h3>Gradle Dependency</h3>
-          <pre><code><span class="code-lang">Gradle</span>dependencies {
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Gradle</span><code>dependencies {
     <span class="cm">// SceneView — Filament + Compose bridge</span>
     implementation(<span class="str">"io.github.sceneview:sceneview:2.2.1"</span>)
     <span class="cm">// AR variant (ARCore): io.github.sceneview:arsceneview:2.2.1</span>
 }</code></pre>
 
           <h3>3D Key Scene in Compose (inside ComposeView IME)</h3>
-          <pre><code><span class="code-lang">Kotlin</span><span class="an">@Composable</span>
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="an">@Composable</span>
 <span class="kw">fun</span> <span class="fn">FilamentKeyboard</span>(
     keyLayout: <span class="ty">List</span>&lt;<span class="ty">KeyDef</span>&gt;,
     pressedKeys: <span class="ty">Set</span>&lt;<span class="ty">Int</span>&gt;
@@ -3723,7 +3731,7 @@ matc -a opengl -p mobile -o src/main/assets/key_metal.filamat key_metal.mat</cod
           </p>
 
           <h3>Generating KTX Environment Maps</h3>
-          <pre><code><span class="code-lang">Bash</span><span class="cm"># Step 1: Download Filament tools from github.com/google/filament/releases
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Bash</span><code><span class="cm"># Step 1: Download Filament tools from github.com/google/filament/releases
 # Step 2: Use cmgen to convert an HDR panorama to Filament's KTX format</span>
 
 <span class="cm"># Download a free HDR from polyhaven.com (e.g., studio_small_09.hdr)</span>
@@ -3738,7 +3746,7 @@ cmgen \
 #   studio_small_09_skybox.ktx (skybox cubemap)</span></code></pre>
 
           <h3>Loading IBL in Kotlin</h3>
-          <pre><code><span class="code-lang">Kotlin</span><span class="kw">fun</span> <span class="fn">loadEnvironment</span>(engine: <span class="ty">Engine</span>, assetPrefix: <span class="ty">String</span>): <span class="ty">IndirectLight</span> {
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="kw">fun</span> <span class="fn">loadEnvironment</span>(engine: <span class="ty">Engine</span>, assetPrefix: <span class="ty">String</span>): <span class="ty">IndirectLight</span> {
     <span class="kw">val</span> iblBuffer = assets.<span class="fn">open</span>(<span class="str">"$assetPrefix_ibl.ktx"</span>).<span class="fn">readBytes</span>()
         .<span class="kw">let</span> { <span class="ty">ByteBuffer</span>.<span class="fn">wrap</span>(it) }
 
@@ -3772,7 +3780,7 @@ cmgen \
             Reinhard.
           </p>
 
-          <pre><code><span class="code-lang">Kotlin</span><span class="cm">// Configure tone mapping in Filament View settings</span>
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="cm">// Configure tone mapping in Filament View settings</span>
 <span class="kw">fun</span> <span class="fn">configureToneMapping</span>(view: <span class="ty">com.google.android.filament.View</span>) {
     <span class="cm">// ACES: Best for metallic / reflective key materials</span>
     view.colorGrading = <span class="ty">ColorGrading.Builder</span>()
@@ -3788,7 +3796,7 @@ cmgen \
 }</code></pre>
 
           <h3>IBL Format Comparison</h3>
-          <div class="table-wrap">
+          <div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable table">
             <table>
               <thead>
                 <tr>
@@ -3852,7 +3860,7 @@ cmgen \
             outputs SH data alongside the cubemap:
           </p>
 
-          <pre><code><span class="code-lang">Bash</span><span class="cm"># Generate spherical harmonics alongside the KTX cubemap</span>
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Bash</span><code><span class="cm"># Generate spherical harmonics alongside the KTX cubemap</span>
 cmgen \
   --format=ktx \
   --size=256 \
@@ -3863,7 +3871,7 @@ cmgen \
 <span class="cm"># Output includes sh.txt: 9 RGB coefficients (L0, L1, L2 bands)</span>
 <span class="cm"># Load as a FloatArray and pass to IndirectLight.Builder</span></code></pre>
 
-          <pre><code><span class="code-lang">Kotlin</span><span class="cm">// Load spherical harmonics from a pre-computed float array</span>
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="cm">// Load spherical harmonics from a pre-computed float array</span>
 <span class="kw">fun</span> <span class="fn">loadDiffuseOnlyIBL</span>(engine: <span class="ty">Engine</span>, shCoeffs: <span class="ty">FloatArray</span>): <span class="ty">IndirectLight</span> {
     <span class="cm">// shCoeffs: 27 floats (9 coefficients × 3 RGB channels)</span>
     <span class="kw">require</span>(shCoeffs.size == <span class="num">27</span>) { <span class="str">"Expected 27 SH coefficients"</span> }
@@ -3881,7 +3889,7 @@ cmgen \
             initialization and switch at zero runtime cost:
           </p>
 
-          <pre><code><span class="code-lang">Kotlin</span><span class="kw">class</span> <span class="ty">IBLManager</span>(
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="kw">class</span> <span class="ty">IBLManager</span>(
     <span class="kw">private val</span> engine: <span class="ty">Engine</span>,
     <span class="kw">private val</span> scene: <span class="ty">Scene</span>,
     <span class="kw">private val</span> assets: <span class="ty">AssetManager</span>
@@ -3982,7 +3990,7 @@ cmgen \
           </p>
 
           <h3>Hardware-Accelerated Canvas Layers</h3>
-          <pre><code><span class="code-lang">Kotlin</span><span class="kw">class</span> <span class="ty">Pseudo3DKeyView</span>(context: <span class="ty">Context</span>) : <span class="ty">View</span>(context) {
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="kw">class</span> <span class="ty">Pseudo3DKeyView</span>(context: <span class="ty">Context</span>) : <span class="ty">View</span>(context) {
 
     <span class="kw">private</span> <span class="kw">val</span> shadowPaint = <span class="ty">Paint</span>(<span class="ty">Paint.ANTI_ALIAS_FLAG</span>).<span class="fn">apply</span> {
         color = <span class="ty">Color</span>.<span class="fn">argb</span>(<span class="num">60</span>, <span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>)
@@ -4033,7 +4041,7 @@ cmgen \
             operations with near-zero CPU cost.
           </p>
 
-          <pre><code><span class="code-lang">Kotlin</span><span class="cm">// Enable hardware layer for a key that will be animated</span>
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="cm">// Enable hardware layer for a key that will be animated</span>
 keyView.<span class="fn">setLayerType</span>(<span class="ty">View.LAYER_TYPE_HARDWARE</span>, <span class="kw">null</span>)
 
 <span class="cm">// Press animation — GPU-only translation, no redraw needed</span>
@@ -4053,7 +4061,7 @@ keyView.<span class="fn">setLayerType</span>(<span class="ty">View.LAYER_TYPE_HA
             the GPU without touching OpenGL.
           </p>
 
-          <pre><code><span class="code-lang">Kotlin</span><span class="cm">// Frosted-glass key overlay using BlendMode (API 29+)</span>
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="cm">// Frosted-glass key overlay using BlendMode (API 29+)</span>
 <span class="kw">private val</span> frostPaint = <span class="ty">Paint</span>(<span class="ty">Paint.ANTI_ALIAS_FLAG</span>).<span class="fn">apply</span> {
     color = <span class="ty">Color</span>.<span class="fn">argb</span>(<span class="num">100</span>, <span class="num">255</span>, <span class="num">255</span>, <span class="num">255</span>)
     blendMode = <span class="ty">BlendMode.SOFT_LIGHT</span>     <span class="cm">// Gentle highlight layer</span>
@@ -4077,7 +4085,7 @@ keyView.<span class="fn">setLayerType</span>(<span class="ty">View.LAYER_TYPE_HA
 }</code></pre>
 
           <h3>BlendMode Quick Reference</h3>
-          <div class="table-wrap">
+          <div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable table">
             <table>
               <thead>
                 <tr>
@@ -4123,7 +4131,7 @@ keyView.<span class="fn">setLayerType</span>(<span class="ty">View.LAYER_TYPE_HA
             works on any API level and requires no shaders.
           </p>
 
-          <pre><code><span class="code-lang">Kotlin</span><span class="kw">fun</span> <span class="fn">drawEmbossedLabel</span>(canvas: <span class="ty">Canvas</span>, text: <span class="ty">String</span>, cx: <span class="ty">Float</span>, cy: <span class="ty">Float</span>) {
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="kw">fun</span> <span class="fn">drawEmbossedLabel</span>(canvas: <span class="ty">Canvas</span>, text: <span class="ty">String</span>, cx: <span class="ty">Float</span>, cy: <span class="ty">Float</span>) {
     <span class="kw">val</span> highlightPaint = <span class="ty">TextPaint</span>(<span class="ty">Paint.ANTI_ALIAS_FLAG</span>).<span class="fn">apply</span> {
         textSize = <span class="num">28f</span>
         color = <span class="ty">Color</span>.<span class="fn">argb</span>(<span class="num">120</span>, <span class="num">255</span>, <span class="num">255</span>, <span class="num">255</span>)   <span class="cm">// Light top edge</span>
@@ -4143,7 +4151,7 @@ keyView.<span class="fn">setLayerType</span>(<span class="ty">View.LAYER_TYPE_HA
 }</code></pre>
 
           <h3>Canvas vs OpenGL: When to Upgrade</h3>
-          <div class="table-wrap">
+          <div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable table">
             <table>
               <thead>
                 <tr>
@@ -4262,7 +4270,7 @@ keyView.<span class="fn">setLayerType</span>(<span class="ty">View.LAYER_TYPE_HA
           </p>
 
           <h3>Animated Noise Key Background</h3>
-          <pre><code><span class="code-lang">Kotlin</span><span class="kw">val</span> animatedNoiseShader = remember {
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="kw">val</span> animatedNoiseShader = remember {
     <span class="ty">RuntimeShader</span>("""
         <span class="kw">uniform</span> <span class="ty">float2</span>  iResolution;
         <span class="kw">uniform</span> <span class="ty">float</span>   iTime;
@@ -4325,7 +4333,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
             AGSL is based on GLSL&nbsp;ES&nbsp;3.0 but has important differences. Knowing these
             upfront prevents frustrating shader compilation errors at runtime.
           </p>
-          <div class="table-wrap">
+          <div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable table">
             <table>
               <thead>
                 <tr>
@@ -4376,7 +4384,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
             glow falloff.
           </p>
 
-          <pre><code><span class="code-lang">AGSL</span><span class="cm">// Neon glow rounded-rect — set uniforms from Kotlin</span>
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">AGSL</span><code><span class="cm">// Neon glow rounded-rect — set uniforms from Kotlin</span>
 <span class="kw">uniform</span> <span class="ty">float2</span> iResolution;     <span class="cm">// Key width, height in px</span>
 <span class="kw">uniform</span> <span class="ty">float</span>  iCornerRadius;   <span class="cm">// Rounded corner radius</span>
 <span class="kw">uniform</span> <span class="ty">float3</span> iGlowColor;      <span class="cm">// Neon RGB (e.g. 0.0, 1.0, 0.8)</span>
@@ -4405,7 +4413,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
             time — ideal for premium key themes.
           </p>
 
-          <pre><code><span class="code-lang">AGSL</span><span class="kw">uniform</span> <span class="ty">float</span> iTime;
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">AGSL</span><code><span class="kw">uniform</span> <span class="ty">float</span> iTime;
 <span class="kw">uniform</span> <span class="ty">float2</span> iResolution;
 <span class="kw">uniform</span> <span class="ty">float3</span> iChromeColor;  <span class="cm">// Base tint (0.8, 0.85, 0.9 for silver)</span>
 
@@ -4431,14 +4439,14 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
             solid color on older devices.
           </p>
 
-          <pre><code><span class="code-lang">Kotlin</span><span class="kw">object</span> <span class="ty">ShaderCompat</span> {
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="kw">object</span> <span class="ty">ShaderCompat</span> {
 
     <span class="cm">/**
      * Returns a RuntimeShader for API 33+ or null for older devices.
      * Caller must provide a Brush/Paint fallback when null is returned.
      */</span>
     <span class="kw">fun</span> <span class="fn">createIfSupported</span>(agslSource: <span class="ty">String</span>): <span class="ty">RuntimeShader</span>? {
-        <span class="kw">if</span> (<span class="ty">Build</span>.<span class="ty">VERSION</span>.SDK_INT < <span class="ty">Build.VERSION_CODES.TIRAMISU</span>) {
+        <span class="kw">if</span> (<span class="ty">Build</span>.<span class="ty">VERSION</span>.SDK_INT &lt; <span class="ty">Build.VERSION_CODES.TIRAMISU</span>) {
             <span class="kw">return null</span>
         }
         <span class="kw">return try</span> {
@@ -4545,7 +4553,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
           </p>
 
           <h3>Architecture: TextureView under Canvas Keys</h3>
-          <pre><code><span class="code-lang">Kotlin</span><span class="kw">override</span> <span class="kw">fun</span> <span class="fn">onCreateInputView</span>(): <span class="ty">View</span> {
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="kw">override</span> <span class="kw">fun</span> <span class="fn">onCreateInputView</span>(): <span class="ty">View</span> {
     <span class="cm">// FrameLayout: TextureView (background) + KeyboardCanvas (foreground)</span>
     <span class="kw">val</span> root = <span class="ty">FrameLayout</span>(<span class="kw">this</span>)
 
@@ -4584,7 +4592,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
             Android offers three surface types for GPU-rendered content. Choosing the right one
             determines compositing flexibility, power draw, and input latency.
           </p>
-          <div class="table-wrap">
+          <div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable table">
             <table>
               <thead>
                 <tr>
@@ -4642,7 +4650,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
             the standard initialization sequence.
           </p>
 
-          <pre><code><span class="code-lang">Kotlin</span><span class="kw">class</span> <span class="ty">BackgroundRenderer</span> {
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="kw">class</span> <span class="ty">BackgroundRenderer</span> {
 
     <span class="kw">private var</span> eglDisplay: <span class="ty">EGLDisplay</span> = <span class="ty">EGL14.EGL_NO_DISPLAY</span>
     <span class="kw">private var</span> eglContext: <span class="ty">EGLContext</span> = <span class="ty">EGL14.EGL_NO_CONTEXT</span>
@@ -4726,7 +4734,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
             limited VRAM (≤&nbsp;2&nbsp;GB shared).
           </p>
 
-          <pre><code><span class="code-lang">Kotlin</span><span class="cm">// Proper lifecycle integration for an IME</span>
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="cm">// Proper lifecycle integration for an IME</span>
 <span class="kw">override</span> <span class="kw">fun</span> <span class="fn">onSurfaceTextureDestroyed</span>(st: <span class="ty">SurfaceTexture</span>): <span class="ty">Boolean</span> {
     backgroundRenderer.<span class="fn">stop</span>()
     <span class="cm">// Wait for render thread to finish EGL teardown</span>
@@ -4788,7 +4796,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
           </p>
 
           <h3>Ripple Effect — Canvas (Beginner Path)</h3>
-          <pre><code><span class="code-lang">Kotlin</span><span class="kw">data class</span> <span class="ty">Ripple</span>(<span class="kw">var</span> x: <span class="ty">Float</span>, <span class="kw">var</span> y: <span class="ty">Float</span>, <span class="kw">var</span> progress: <span class="ty">Float</span> = <span class="num">0f</span>)
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="kw">data class</span> <span class="ty">Ripple</span>(<span class="kw">var</span> x: <span class="ty">Float</span>, <span class="kw">var</span> y: <span class="ty">Float</span>, <span class="kw">var</span> progress: <span class="ty">Float</span> = <span class="num">0f</span>)
 
 <span class="kw">class</span> <span class="ty">RippleCanvasOverlay</span>(context: <span class="ty">Context</span>) : <span class="ty">View</span>(context) {
     <span class="kw">private</span> <span class="kw">val</span> ripples = <span class="fn">mutableListOf</span>&lt;<span class="ty">Ripple</span>&gt;()
@@ -4821,7 +4829,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
 }</code></pre>
 
           <h3>GPU Particle Spark System (OpenGL ES 3.1)</h3>
-          <pre><code><span class="code-lang">GLSL</span><span class="cm">// Compute shader for particle simulation — OpenGL ES 3.1+
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">GLSL</span><code><span class="cm">// Compute shader for particle simulation — OpenGL ES 3.1+
 // Each particle: [posX, posY, velX, velY, life, maxLife]</span>
 <span class="tg">#version 310 es</span>
 <span class="kw">layout</span>(local_size_x = <span class="num">64</span>) <span class="kw">in</span>;
@@ -4838,7 +4846,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
     <span class="kw">uint</span> base = i * <span class="num">6u</span>;
 
     <span class="ty">float</span> life = data[base + <span class="num">4u</span>];
-    <span class="kw">if</span> (life <= <span class="num">0.0</span>) <span class="kw">return</span>; <span class="cm">// Dead particle — skip</span>
+    <span class="kw">if</span> (life &lt;= <span class="num">0.0</span>) <span class="kw">return</span>; <span class="cm">// Dead particle — skip</span>
 
     <span class="cm">// Integrate position</span>
     data[base + <span class="num">0u</span>] += data[base + <span class="num">2u</span>] * uDeltaTime;
@@ -4896,7 +4904,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
           </p>
 
           <h3>Custom Layout XML Schema</h3>
-          <pre><code><span class="code-lang">XML</span><span class="cm">&lt;!-- res/xml/layout_qwerty.xml — Custom keyboard layout schema --&gt;</span>
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">XML</span><code><span class="cm">&lt;!-- res/xml/layout_qwerty.xml — Custom keyboard layout schema --&gt;</span>
 <span class="tg">&lt;keyboard</span>
     <span class="at">xmlns:app</span>=<span class="str">"http://schemas.android.com/apk/res-auto"</span>
     <span class="at">app:keyHeight</span>=<span class="str">"48dp"</span>
@@ -4925,7 +4933,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
 <span class="tg">&lt;/keyboard&gt;</span></code></pre>
 
           <h3>Parsing Custom Layout XML in Kotlin</h3>
-          <pre><code><span class="code-lang">Kotlin</span><span class="kw">data class</span> <span class="ty">KeyDef</span>(
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="kw">data class</span> <span class="ty">KeyDef</span>(
     <span class="kw">val</span> code: <span class="ty">String</span>,
     <span class="kw">val</span> label: <span class="ty">String</span>,
     <span class="kw">val</span> sublabel: <span class="ty">String</span> = <span class="str">""</span>,
@@ -4997,7 +5005,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
           </p>
 
           <h3>Custom Shape Types</h3>
-          <div class="table-wrap">
+          <div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable table">
             <table>
               <thead>
                 <tr>
@@ -5043,7 +5051,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
           </div>
 
           <h3>Hexagonal Key Hit Detection</h3>
-          <pre><code><span class="code-lang">Kotlin</span><span class="cm">/**
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="cm">/**
  * Returns true if (px, py) falls inside a regular hexagon
  * centered at (cx, cy) with circumradius r.
  * Flat-top orientation (rotated 30° from pointy-top).
@@ -5055,7 +5063,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
     <span class="cm">// Fast early-out with bounding box</span>
     <span class="kw">if</span> (dx > r || dy > r * <span class="num">0.866</span>) <span class="kw">return</span> <span class="kw">false</span>
     <span class="cm">// Half-plane test for hex edge</span>
-    <span class="kw">return</span> (<span class="num">0.866</span> * dx + <span class="num">0.5</span> * dy) <= r * <span class="num">0.866</span>
+    <span class="kw">return</span> (<span class="num">0.866</span> * dx + <span class="num">0.5</span> * dy) &lt;= r * <span class="num">0.866</span>
 }
 
 <span class="cm">// Honeycomb layout positioning — alternate row offset</span>
@@ -5095,7 +5103,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
           </p>
 
           <h3>Theme Data Model</h3>
-          <pre><code><span class="code-lang">Kotlin</span><span class="an">@Serializable</span>
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="an">@Serializable</span>
 <span class="kw">data class</span> <span class="ty">KeyboardTheme</span>(
     <span class="kw">val</span> id:              <span class="ty">String</span>,
     <span class="kw">val</span> name:            <span class="ty">String</span>,
@@ -5139,7 +5147,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
 }</code></pre>
 
           <h3>Material You Integration</h3>
-          <pre><code><span class="code-lang">Kotlin</span><span class="cm">// Extract Material You dynamic colors and map to keyboard theme</span>
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="cm">// Extract Material You dynamic colors and map to keyboard theme</span>
 <span class="an">@RequiresApi(31)</span>
 <span class="kw">fun</span> <span class="fn">KeyboardTheme.Companion.fromMaterialYou</span>(context: <span class="ty">Context</span>): <span class="ty">KeyboardTheme</span> {
     <span class="kw">val</span> dynamicColors = <span class="ty">DynamicColors</span>.<span class="fn">wrapContextIfAvailable</span>(context)
@@ -5192,7 +5200,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
           </p>
 
           <h3>Image Pipeline: Load → Resize → Blur → Cache</h3>
-          <pre><code><span class="code-lang">Kotlin</span><span class="kw">class</span> <span class="ty">BackgroundImagePipeline</span>(
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="kw">class</span> <span class="ty">BackgroundImagePipeline</span>(
     <span class="kw">private val</span> context: <span class="ty">Context</span>,
     <span class="kw">private val</span> scope: <span class="ty">CoroutineScope</span>
 ) {
@@ -5263,7 +5271,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
             composites on the GPU compositor directly, with no intermediate bitmap allocation.
           </p>
 
-          <pre><code><span class="code-lang">Kotlin</span><span class="cm">// Modern blur — API 31+ (Android 12)</span>
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="cm">// Modern blur — API 31+ (Android 12)</span>
 <span class="kw">fun</span> <span class="fn">applyBlur</span>(view: <span class="ty">View</span>, radiusPx: <span class="ty">Float</span>) {
     <span class="kw">if</span> (<span class="ty">Build</span>.<span class="ty">VERSION</span>.SDK_INT >= <span class="ty">Build.VERSION_CODES.S</span>) {
         view.setRenderEffect(
@@ -5284,7 +5292,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
             labels and borders for readability. The Palette library handles this efficiently.
           </p>
 
-          <pre><code><span class="code-lang">Kotlin</span><span class="cm">// Extract dominant color from background to tint keys</span>
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="cm">// Extract dominant color from background to tint keys</span>
 <span class="kw">suspend fun</span> <span class="fn">extractKeyColors</span>(background: <span class="ty">Bitmap</span>): <span class="ty">KeyColors</span> =
     <span class="fn">withContext</span>(<span class="ty">Dispatchers.Default</span>) {
         <span class="kw">val</span> palette = <span class="ty">Palette</span>.<span class="fn">from</span>(background)
@@ -5310,7 +5318,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
 )</code></pre>
 
           <h3>Image Format Handling</h3>
-          <div class="table-wrap">
+          <div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable table">
             <table>
               <thead>
                 <tr>
@@ -5420,7 +5428,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
           </p>
 
           <h3>Sound Pack Structure</h3>
-          <pre><code><span class="code-lang">JSON</span><span class="cm">// Sound pack descriptor (JSON — shipped in assets/sounds/)</span>
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">JSON</span><code><span class="cm">// Sound pack descriptor (JSON — shipped in assets/sounds/)</span>
 {
   "id":       "mechanical_blue",
   "name":     "Mechanical Blue Switch",
@@ -5438,7 +5446,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
 }</code></pre>
 
           <h3>SoundPool-Based Playback Engine</h3>
-          <pre><code><span class="code-lang">Kotlin</span><span class="kw">class</span> <span class="ty">KeySoundEngine</span>(context: <span class="ty">Context</span>) {
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="kw">class</span> <span class="ty">KeySoundEngine</span>(context: <span class="ty">Context</span>) {
 
     <span class="kw">private</span> <span class="kw">val</span> soundPool = <span class="ty">SoundPool.Builder</span>()
         .<span class="fn">setMaxStreams</span>(<span class="num">4</span>)
@@ -5490,7 +5498,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
             (rare); for short key-click samples, skip focus entirely and use the
             <strong>sonification</strong> usage type so the system mixes your clips automatically.
           </p>
-          <pre><code><span class="code-lang">Kotlin</span><span class="kw">object</span> <span class="ty">KeySoundPolicy</span> {
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="kw">object</span> <span class="ty">KeySoundPolicy</span> {
 
     <span class="cm">/**
      * Returns AudioAttributes tuned for minimal-latency key feedback.
@@ -5529,7 +5537,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
             </div>
           </div>
 
-          <div class="table-wrap">
+          <div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable table">
             <table>
               <thead>
                 <tr>
@@ -5589,7 +5597,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
             waveform API with a richer vocabulary of tactile sensations that the HAL can optimize
             for specific actuator hardware.
           </p>
-          <pre><code><span class="code-lang">Kotlin</span><span class="cm">// Requires API 31+ (Android 12)</span>
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="cm">// Requires API 31+ (Android 12)</span>
 <span class="kw">import</span> android.os.VibrationEffect
 <span class="kw">import</span> android.os.VibrationEffect.Composition
 
@@ -5660,7 +5668,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
             delete buzz — making the keyboard feel more responsive without visual confirmation.
           </p>
 
-          <div class="table-wrap">
+          <div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable table">
             <table>
               <thead>
                 <tr>
@@ -5732,7 +5740,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
             one default pack and download extras on demand. Store packs in app-private internal
             storage and validate the JSON manifest before loading.
           </p>
-          <pre><code><span class="code-lang">Kotlin</span><span class="kw">data class</span> <span class="ty">SoundPackMeta</span>(
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="kw">data class</span> <span class="ty">SoundPackMeta</span>(
     <span class="kw">val</span> id: <span class="ty">String</span>,
     <span class="kw">val</span> displayName: <span class="ty">String</span>,
     <span class="kw">val</span> version: <span class="ty">Int</span>,
@@ -5790,7 +5798,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
             fire both from the same <code>onPress()</code> callback on the UI thread — never from a
             background coroutine.
           </p>
-          <pre><code><span class="code-lang">Kotlin</span><span class="kw">class</span> <span class="ty">FeedbackCoordinator</span>(
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="kw">class</span> <span class="ty">FeedbackCoordinator</span>(
     <span class="kw">private val</span> soundEngine: <span class="ty">KeySoundEngine</span>,
     <span class="kw">private val</span> vibrator: <span class="ty">Vibrator</span>,
     <span class="kw">private val</span> preferences: <span class="ty">KeyboardPreferences</span>,
@@ -5874,7 +5882,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
           </p>
 
           <h3>Custom Font Pipeline</h3>
-          <pre><code><span class="code-lang">Kotlin</span><span class="kw">object</span> <span class="ty">KeyFontCache</span> {
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="kw">object</span> <span class="ty">KeyFontCache</span> {
     <span class="kw">private</span> <span class="kw">val</span> cache = <span class="fn">mutableMapOf</span>&lt;<span class="ty">String</span>, <span class="ty">Typeface</span>&gt;()
 
     <span class="kw">fun</span> <span class="fn">load</span>(context: <span class="ty">Context</span>, fontIdentifier: <span class="ty">String</span>): <span class="ty">Typeface</span> =
@@ -5924,7 +5932,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
             returns ink bounds (tight around glyphs), while
             <code>measureText()</code> returns the logical advance including side bearings.
           </p>
-          <pre><code><span class="code-lang">Kotlin</span><span class="kw">object</span> <span class="ty">LabelRenderer</span> {
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="kw">object</span> <span class="ty">LabelRenderer</span> {
 
     <span class="kw">private val</span> bounds = <span class="ty">Rect</span>()
 
@@ -5967,7 +5975,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
             in <code>Application.onCreate()</code> — so the library is ready before the first emoji
             draw call.
           </p>
-          <pre><code><span class="code-lang">Kotlin</span><span class="kw">import</span> androidx.emoji2.text.EmojiCompat
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="kw">import</span> androidx.emoji2.text.EmojiCompat
 <span class="kw">import</span> androidx.emoji2.bundled.BundledEmojiCompatConfig
 
 <span class="cm">// In Application.onCreate()</span>
@@ -6008,7 +6016,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
             <em>grade</em>, and <em>optical&nbsp;size</em> axes — giving you crisp vector icons at
             any density without per-DPI assets.
           </p>
-          <pre><code><span class="code-lang">Kotlin</span><span class="kw">object</span> <span class="ty">IconFont</span> {
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="kw">object</span> <span class="ty">IconFont</span> {
     <span class="kw">private var</span> typeface: <span class="ty">Typeface</span>? = <span class="kw">null</span>
 
     <span class="kw">fun</span> <span class="fn">get</span>(context: <span class="ty">Context</span>): <span class="ty">Typeface</span> {
@@ -6039,7 +6047,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
             API&nbsp;29. For older APIs, use <code>Paint.setTextLocale()</code> to hint the shaper.
           </p>
 
-          <div class="table-wrap">
+          <div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable table">
             <table>
               <thead>
                 <tr>
@@ -6117,7 +6125,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
 
           <!-- ── 22 F  Downloadable Fonts API ── -->
           <h3>Downloadable Fonts API</h3>
-          <pre><code><span class="code-lang">Kotlin</span><span class="kw">import</span> androidx.core.provider.FontRequest
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="kw">import</span> androidx.core.provider.FontRequest
 <span class="kw">import</span> androidx.core.provider.FontsContractCompat
 
 <span class="kw">fun</span> <span class="fn">requestFont</span>(context: <span class="ty">Context</span>, fontFamily: <span class="ty">String</span>, callback: (<span class="ty">Typeface</span>) -> <span class="ty">Unit</span>) {
@@ -6219,7 +6227,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
           </div>
 
           <h3>Unity as Android Library Module</h3>
-          <pre><code><span class="code-lang">Gradle</span><span class="cm">// build.gradle.kts (IME module)
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Gradle</span><code><span class="cm">// build.gradle.kts (IME module)
 // Unity exports its runtime as an AAR — add it as a local dependency</span>
 dependencies {
     implementation(<span class="fn">fileTree</span>(dir = <span class="str">"libs"</span>, include = listOf(<span class="str">"*.aar"</span>)))
@@ -6231,7 +6239,7 @@ dependencies {
 <span class="cm">// -keep class com.unity.androidnotifications.** { *; }</span></code></pre>
 
           <h3>UnityPlayer Bridge in IME Service</h3>
-          <pre><code><span class="code-lang">Kotlin</span><span class="kw">class</span> <span class="ty">UnityKeyboardService</span> : <span class="ty">InputMethodService</span>() {
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="kw">class</span> <span class="ty">UnityKeyboardService</span> : <span class="ty">InputMethodService</span>() {
 
     <span class="kw">private</span> <span class="kw">var</span> unityPlayer: <span class="ty">UnityPlayer</span>? = <span class="kw">null</span>
 
@@ -6307,7 +6315,7 @@ dependencies {
           </p>
 
           <h3>Setup: Godot Android Library</h3>
-          <pre><code><span class="code-lang">Gradle</span><span class="cm">// 1. Export your Godot keyboard scene as an Android library</span>
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Gradle</span><code><span class="cm">// 1. Export your Godot keyboard scene as an Android library</span>
 <span class="cm">//    In Godot: Project → Export → Android → Export as Library</span>
 <span class="cm">//    This generates a .aar file</span>
 
@@ -6326,7 +6334,7 @@ dependencies {
 }</code></pre>
 
           <h3>GodotFragment in IME</h3>
-          <pre><code><span class="code-lang">Kotlin</span><span class="kw">class</span> <span class="ty">GodotKeyboardService</span> : <span class="ty">InputMethodService</span>(), <span class="ty">GodotHost</span> {
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="kw">class</span> <span class="ty">GodotKeyboardService</span> : <span class="ty">InputMethodService</span>(), <span class="ty">GodotHost</span> {
 
     <span class="kw">private</span> <span class="kw">var</span> godotFragment: <span class="ty">GodotFragment</span>? = <span class="kw">null</span>
 
@@ -6373,7 +6381,7 @@ dependencies {
             (<code>keyboard_bridge.gd</code>) receives tap events from the Android host and
             dispatches visual feedback — press animations, particle bursts, or shader transitions.
           </p>
-          <pre><code><span class="code-lang">GDScript</span><span class="cm"># keyboard_bridge.gd — autoloaded singleton</span>
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">GDScript</span><code><span class="cm"># keyboard_bridge.gd — autoloaded singleton</span>
 <span class="kw">extends</span> <span class="ty">Node</span>
 
 <span class="cm">## Emitted when the Android host taps a key.</span>
@@ -6388,7 +6396,7 @@ signal key_released(label: <span class="ty">String</span>)
     key_released.emit(label)
 </code></pre>
 
-          <pre><code><span class="code-lang">GDScript</span><span class="cm"># key_cap.gd — attach to each key MeshInstance3D</span>
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">GDScript</span><code><span class="cm"># key_cap.gd — attach to each key MeshInstance3D</span>
 <span class="kw">extends</span> <span class="ty">MeshInstance3D</span>
 
 @export <span class="kw">var</span> label: <span class="ty">String</span> = <span class="str">"A"</span>
@@ -6435,7 +6443,7 @@ signal key_released(label: <span class="ty">String</span>)
               <code>Engine.get_singleton("PluginName").method()</code>.
             </li>
           </ol>
-          <pre><code><span class="code-lang">Kotlin</span><span class="kw">class</span> <span class="ty">KeyboardPlugin</span>(godot: <span class="ty">Godot</span>) : <span class="ty">GodotPlugin</span>(godot) {
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="kw">class</span> <span class="ty">KeyboardPlugin</span>(godot: <span class="ty">Godot</span>) : <span class="ty">GodotPlugin</span>(godot) {
 
     <span class="kw">override fun</span> <span class="fn">getPluginName</span>() = <span class="str">"KeyboardPlugin"</span>
 
@@ -6463,7 +6471,7 @@ signal key_released(label: <span class="ty">String</span>)
 
           <!-- ── 24 D  Performance Comparison ── -->
           <h3>3D Engine Comparison for Keyboard Rendering</h3>
-          <div class="table-wrap">
+          <div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable table">
             <table>
               <thead>
                 <tr>
@@ -6615,7 +6623,7 @@ signal key_released(label: <span class="ty">String</span>)
           </div>
 
           <h3>Sceneform AR Overlay Architecture</h3>
-          <pre><code><span class="code-lang">Gradle</span><span class="cm">// Gradle dependency</span>
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Gradle</span><code><span class="cm">// Gradle dependency</span>
 implementation(<span class="str">"io.github.sceneview:arsceneview:2.2.1"</span>)
 
 <span class="cm">// AndroidManifest.xml additions for AR keyboard mode</span>
@@ -6623,7 +6631,7 @@ implementation(<span class="str">"io.github.sceneview:arsceneview:2.2.1"</span>)
 <span class="cm">&lt;uses-feature android:name="android.hardware.camera.ar" android:required="false" /&gt;</span>
 <span class="cm">&lt;meta-data android:name="com.google.ar.core" android:value="optional" /&gt;</span></code></pre>
 
-          <pre><code><span class="code-lang">Kotlin</span><span class="kw">class</span> <span class="ty">ARKeyboardService</span> : <span class="ty">InputMethodService</span>() {
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="kw">class</span> <span class="ty">ARKeyboardService</span> : <span class="ty">InputMethodService</span>() {
 
     <span class="kw">private</span> <span class="kw">var</span> arMode = <span class="kw">false</span>
 
@@ -6664,7 +6672,7 @@ implementation(<span class="str">"io.github.sceneview:arsceneview:2.2.1"</span>)
             physical key size in AR space (≈ 16 mm square at arm's length).
           </p>
 
-          <pre><code><span class="code-lang">Kotlin</span><span class="kw">private fun</span> <span class="fn">buildKeyboardNode</span>(plane: <span class="ty">Plane</span>): <span class="ty">AnchorNode</span> {
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="kw">private fun</span> <span class="fn">buildKeyboardNode</span>(plane: <span class="ty">Plane</span>): <span class="ty">AnchorNode</span> {
     <span class="kw">val</span> pose   = plane.<span class="fn">centerPose</span>
     <span class="kw">val</span> anchor = plane.<span class="fn">createAnchor</span>(pose)
     <span class="kw">val</span> root   = <span class="ty">AnchorNode</span>(anchor)
@@ -6729,7 +6737,7 @@ implementation(<span class="str">"io.github.sceneview:arsceneview:2.2.1"</span>)
             whose trackable is the keyboard anchor plane identifies which key node the user tapped.
           </p>
 
-          <pre><code><span class="code-lang">Kotlin</span><span class="kw">private fun</span> <span class="fn">handleARTouch</span>(
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="kw">private fun</span> <span class="fn">handleARTouch</span>(
     frame: <span class="ty">Frame</span>,
     motionEvent: <span class="ty">MotionEvent</span>,
     keyboardRoot: <span class="ty">AnchorNode</span>
@@ -6766,7 +6774,7 @@ implementation(<span class="str">"io.github.sceneview:arsceneview:2.2.1"</span>)
             the service lifecycle.
           </p>
 
-          <pre><code><span class="code-lang">Kotlin</span><span class="kw">class</span> <span class="ty">AnchorManager</span> {
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="kw">class</span> <span class="ty">AnchorManager</span> {
     <span class="kw">private val</span> anchors = <span class="fn">mutableListOf</span>&lt;<span class="ty">Anchor</span>&gt;()
 
     <span class="kw">fun</span> <span class="fn">track</span>(anchor: <span class="ty">Anchor</span>) { anchors.<span class="fn">add</span>(anchor) }
@@ -6811,7 +6819,7 @@ implementation(<span class="str">"io.github.sceneview:arsceneview:2.2.1"</span>)
           </div>
 
           <h3>AR Library Comparison</h3>
-          <div class="table-wrap">
+          <div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable table">
             <table>
               <thead>
                 <tr>
@@ -6871,7 +6879,7 @@ implementation(<span class="str">"io.github.sceneview:arsceneview:2.2.1"</span>)
             Enable depth occlusion by configuring the session with <code>DepthMode.AUTOMATIC</code>.
           </p>
 
-          <pre><code><span class="code-lang">Kotlin</span><span class="kw">fun</span> <span class="fn">configureARSession</span>(session: <span class="ty">Session</span>) {
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="kw">fun</span> <span class="fn">configureARSession</span>(session: <span class="ty">Session</span>) {
     <span class="kw">val</span> config = session.config.<span class="fn">apply</span> {
         depthMode = <span class="kw">if</span> (session.<span class="fn">isDepthModeSupported</span>(<span class="ty">Config.DepthMode.AUTOMATIC</span>))
             <span class="ty">Config.DepthMode.AUTOMATIC</span>
@@ -6958,7 +6966,7 @@ implementation(<span class="str">"io.github.sceneview:arsceneview:2.2.1"</span>)
             daylight, darker for night, simpler layouts when error rate is high.
           </p>
 
-          <pre><code><span class="code-lang">Gradle</span><span class="cm">// Gradle</span>
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Gradle</span><code><span class="cm">// Gradle</span>
 implementation(<span class="str">"org.tensorflow:tensorflow-lite:2.14.0"</span>)
 implementation(<span class="str">"org.tensorflow:tensorflow-lite-support:0.4.4"</span>)
 
@@ -7004,9 +7012,9 @@ implementation(<span class="str">"org.tensorflow:tensorflow-lite-support:0.4.4"<
             <code>ThemeAdvisor</code> logic ports directly.
           </p>
 
-          <pre><code><span class="code-lang">Gradle</span>implementation(<span class="str">"com.microsoft.onnxruntime:onnxruntime-android:1.18.0"</span>)</code></pre>
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Gradle</span><code>implementation(<span class="str">"com.microsoft.onnxruntime:onnxruntime-android:1.18.0"</span>)</code></pre>
 
-          <pre><code><span class="code-lang">Kotlin</span><span class="kw">class</span> <span class="ty">OnnxThemeAdvisor</span>(context: <span class="ty">Context</span>) {
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="kw">class</span> <span class="ty">OnnxThemeAdvisor</span>(context: <span class="ty">Context</span>) {
 
     <span class="kw">private val</span> session: <span class="ty">OrtSession</span>
 
@@ -7049,7 +7057,7 @@ implementation(<span class="str">"org.tensorflow:tensorflow-lite-support:0.4.4"<
             sensors, and app context. No individual keystrokes are recorded — only derived metrics.
           </p>
 
-          <pre><code><span class="code-lang">Kotlin</span><span class="kw">data class</span> <span class="ty">ThemeFeatures</span>(
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="kw">data class</span> <span class="ty">ThemeFeatures</span>(
     <span class="kw">val</span> hourOfDay: <span class="ty">Float</span>,            <span class="cm">// 0–23, encoded as sin/cos pair</span>
     <span class="kw">val</span> typingSpeed: <span class="ty">Float</span>,           <span class="cm">// Characters per minute</span>
     <span class="kw">val</span> errorRate: <span class="ty">Float</span>,             <span class="cm">// Backspaces / total keys ratio</span>
@@ -7099,7 +7107,7 @@ implementation(<span class="str">"org.tensorflow:tensorflow-lite-support:0.4.4"<
             toolchains.
           </p>
 
-          <div class="table-wrap">
+          <div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable table">
             <table>
               <thead>
                 <tr>
@@ -7148,7 +7156,7 @@ implementation(<span class="str">"org.tensorflow:tensorflow-lite-support:0.4.4"<
             </table>
           </div>
 
-          <pre><code><span class="code-lang">Python</span><span class="cm"># Post-training dynamic quantization (TFLite)</span>
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Python</span><code><span class="cm"># Post-training dynamic quantization (TFLite)</span>
 <span class="kw">import</span> tensorflow <span class="kw">as</span> tf
 
 converter = tf.lite.<span class="ty">TFLiteConverter</span>.<span class="fn">from_saved_model</span>(<span class="str">"saved_model/"</span>)
@@ -7169,7 +7177,7 @@ tflite_quant = converter.<span class="fn">convert</span>()
             <code>WorkManager</code> job once per day.
           </p>
 
-          <pre><code><span class="code-lang">Kotlin</span><span class="kw">class</span> <span class="ty">ThemeLearner</span>(<span class="kw">private val</span> db: <span class="ty">CorrectionDao</span>) {
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="kw">class</span> <span class="ty">ThemeLearner</span>(<span class="kw">private val</span> db: <span class="ty">CorrectionDao</span>) {
 
     <span class="kw">data class</span> <span class="ty">Correction</span>(
         <span class="kw">val</span> features: <span class="ty">FloatArray</span>,
@@ -7225,7 +7233,7 @@ tflite_quant = converter.<span class="fn">convert</span>()
           </div>
 
           <h3>ML Framework Comparison</h3>
-          <div class="table-wrap">
+          <div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable table">
             <table>
               <thead>
                 <tr>
@@ -7283,7 +7291,7 @@ tflite_quant = converter.<span class="fn">convert</span>()
             compare theme-switch rates and session duration.
           </p>
 
-          <pre><code><span class="code-lang">Kotlin</span><span class="kw">enum class</span> <span class="ty">ExperimentGroup</span> { CONTROL, AI_RECOMMEND }
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="kw">enum class</span> <span class="ty">ExperimentGroup</span> { CONTROL, AI_RECOMMEND }
 
 <span class="kw">object</span> <span class="ty">ThemeExperiment</span> {
 
@@ -7379,7 +7387,7 @@ tflite_quant = converter.<span class="fn">convert</span>()
           </p>
 
           <h3>Extracting Wallpaper Colors</h3>
-          <pre><code><span class="code-lang">Kotlin</span><span class="an">@RequiresApi(27)</span>
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="an">@RequiresApi(27)</span>
 <span class="kw">fun</span> <span class="fn">extractWallpaperPalette</span>(context: <span class="ty">Context</span>): <span class="ty">WallpaperColors</span>? {
     <span class="kw">val</span> wm = <span class="ty">WallpaperManager</span>.<span class="fn">getInstance</span>(context)
     <span class="kw">return</span> wm.<span class="fn">getWallpaperColors</span>(<span class="ty">WallpaperManager.FLAG_SYSTEM</span>)
@@ -7428,7 +7436,7 @@ tflite_quant = converter.<span class="fn">convert</span>()
             that fires whenever the dominant palette changes.
           </p>
 
-          <pre><code><span class="code-lang">Kotlin</span><span class="an">@RequiresApi(27)</span>
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="an">@RequiresApi(27)</span>
 <span class="kw">class</span> <span class="ty">WallpaperColorWatcher</span>(
     <span class="kw">private val</span> context: <span class="ty">Context</span>,
     <span class="kw">private val</span> onColorsChanged: (<span class="ty">WallpaperColors</span>?) -> <span class="ty">Unit</span>
@@ -7483,7 +7491,7 @@ tflite_quant = converter.<span class="fn">convert</span>()
             system.
           </p>
 
-          <pre><code><span class="code-lang">Kotlin</span><span class="an">@RequiresApi(31)</span>
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="an">@RequiresApi(31)</span>
 <span class="kw">fun</span> <span class="fn">applyDynamicColors</span>(context: <span class="ty">Context</span>): <span class="ty">KeyboardTheme</span> {
     <span class="cm">// Resolve Material You tokens from the current wallpaper palette</span>
     <span class="kw">val</span> themed = <span class="ty">DynamicColors</span>.<span class="fn">wrapContextIfAvailable</span>(context)
@@ -7523,7 +7531,7 @@ tflite_quant = converter.<span class="fn">convert</span>()
             as the wallpaper changes.
           </p>
 
-          <pre><code><span class="code-lang">Kotlin</span><span class="kw">object</span> <span class="ty">ColorTransitioner</span> {
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="kw">object</span> <span class="ty">ColorTransitioner</span> {
 
     <span class="kw">fun</span> <span class="fn">animateThemeSwitch</span>(
         view: <span class="ty">View</span>,
@@ -7573,7 +7581,7 @@ tflite_quant = converter.<span class="fn">convert</span>()
             and fall back to guaranteed-contrast colours when the ratio is too low.
           </p>
 
-          <pre><code><span class="code-lang">Kotlin</span><span class="kw">object</span> <span class="ty">ContrastChecker</span> {
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="kw">object</span> <span class="ty">ContrastChecker</span> {
 
     <span class="kw">fun</span> <span class="fn">contrastRatio</span>(fg: <span class="ty">Int</span>, bg: <span class="ty">Int</span>): <span class="ty">Double</span> {
         <span class="kw">val</span> lum1 = <span class="fn">relativeLuminance</span>(fg) + <span class="num">0.05</span>
@@ -7618,7 +7626,7 @@ tflite_quant = converter.<span class="fn">convert</span>()
           </div>
 
           <h3>Wallpaper Source Comparison</h3>
-          <div class="table-wrap">
+          <div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable table">
             <table>
               <thead>
                 <tr>
@@ -7780,7 +7788,7 @@ tflite_quant = converter.<span class="fn">convert</span>()
           </div>
 
           <h3>Thermal Throttle Detection</h3>
-          <pre><code><span class="code-lang">Kotlin</span><span class="cm">// Detect thermal throttling and reduce visual quality</span>
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="cm">// Detect thermal throttling and reduce visual quality</span>
 <span class="kw">class</span> <span class="ty">ThermalAwareRenderer</span>(context: <span class="ty">Context</span>) {
 
     <span class="kw">private</span> <span class="kw">val</span> powerManager = context.<span class="fn">getSystemService</span>(<span class="ty">PowerManager::class.java</span>)
@@ -7934,7 +7942,7 @@ tflite_quant = converter.<span class="fn">convert</span>()
             combined with a pixel-diffing library catches subtle shader and compositing changes.
           </p>
 
-          <pre><code><span class="code-lang">Kotlin</span><span class="an">@RunWith(AndroidJUnit4::class)</span>
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="an">@RunWith(AndroidJUnit4::class)</span>
 <span class="an">@LargeTest</span>
 <span class="kw">class</span> <span class="ty">KeyboardVisualRegressionTest</span> {
 
@@ -8015,7 +8023,7 @@ tflite_quant = converter.<span class="fn">convert</span>()
             stalls, excessive draw calls, and thermal degradation that unit tests cannot reveal.
           </p>
 
-          <pre><code><span class="code-lang">Kotlin</span><span class="an">@RunWith(AndroidJUnit4::class)</span>
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="an">@RunWith(AndroidJUnit4::class)</span>
 <span class="kw">class</span> <span class="ty">KeyboardFrameBenchmark</span> {
 
     <span class="an">@get:Rule</span>
@@ -8050,7 +8058,7 @@ tflite_quant = converter.<span class="fn">convert</span>()
             coverage for a confident release.
           </p>
 
-          <div class="table-wrap">
+          <div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable table">
             <table>
               <thead>
                 <tr>
@@ -8107,7 +8115,7 @@ tflite_quant = converter.<span class="fn">convert</span>()
             performance and thermal telemetry from test devices.
           </p>
 
-          <pre><code><span class="code-lang">Shell</span><span class="cm"># GPU rendering profile — frame times per window</span>
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Shell</span><code><span class="cm"># GPU rendering profile — frame times per window</span>
 adb shell dumpsys gfxinfo com.example.keyboard framestats
 
 <span class="cm"># Thermal headroom — values closer to 1.0 indicate imminent throttling</span>
@@ -8151,7 +8159,7 @@ adb shell cmd thermalservice override-status 2</code></pre>
             request and delegates GPU benchmarks to a nightly device-farm run.
           </p>
 
-          <pre><code><span class="code-lang">YAML</span><span class="cm"># .github/workflows/visual-qa.yml</span>
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">YAML</span><code><span class="cm"># .github/workflows/visual-qa.yml</span>
 <span class="kw">name</span>: Visual QA
 <span class="kw">on</span>:
   <span class="kw">pull_request</span>:
@@ -8210,7 +8218,7 @@ adb shell cmd thermalservice override-status 2</code></pre>
             analytics.
           </p>
 
-          <pre><code><span class="code-lang">Kotlin</span><span class="kw">object</span> <span class="ty">ShaderSmokeTest</span> {
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="kw">object</span> <span class="ty">ShaderSmokeTest</span> {
 
     <span class="kw">data class</span> <span class="ty">ShaderResult</span>(
         <span class="kw">val</span> name: <span class="ty">String</span>,
@@ -8256,7 +8264,7 @@ adb shell cmd thermalservice override-status 2</code></pre>
             manual colour-picker checks.
           </p>
 
-          <pre><code><span class="code-lang">Kotlin</span><span class="an">@Test</span>
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="an">@Test</span>
 <span class="kw">fun</span> <span class="fn">allThemesMeetWcagContrastMinimum</span>() {
     <span class="kw">val</span> themes = <span class="ty">ThemeRegistry</span>.<span class="fn">allBundledThemes</span>()
     <span class="kw">val</span> failures = <span class="fn">mutableListOf</span>&lt;<span class="ty">String</span>&gt;()
@@ -8282,7 +8290,7 @@ adb shell cmd thermalservice override-status 2</code></pre>
             structured test protocol to verify thermal compliance on reference devices.
           </p>
 
-          <div class="table-wrap">
+          <div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable table">
             <table>
               <thead>
                 <tr>
@@ -8399,7 +8407,7 @@ adb shell cmd thermalservice override-status 2</code></pre>
             evaluate dependencies before adding them to your build.
           </p>
 
-          <div class="table-wrap">
+          <div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable table">
             <table>
               <thead>
                 <tr>
@@ -8771,10 +8779,10 @@ adb shell cmd thermalservice override-status 2</code></pre>
           </div>
 
           <h3>APA (7th Edition)</h3>
-          <pre><code>Made in Jurgistan. (2026). Android Keyboard Design Guide: 3D &amp; Personalization (Version 2026.2.0) [Computer software]. https://Made-in-Jurgistan.github.io/android-keyboard-design-guide-3d-personalization/</code></pre>
+          <pre tabindex="0" translate="no"><code>Made in Jurgistan. (2026). Android Keyboard Design Guide: 3D &amp; Personalization (Version 2026.2.0) [Computer software]. https://Made-in-Jurgistan.github.io/android-keyboard-design-guide-3d-personalization/</code></pre>
 
           <h3>BibTeX</h3>
-          <pre><code>@software{Made_in_Jurgistan_3D_Personalization_2026,
+          <pre tabindex="0" translate="no"><code>@software{Made_in_Jurgistan_3D_Personalization_2026,
   author = {Made in Jurgistan},
   month = {1},
   title = {{Android Keyboard Design Guide: 3D &amp; Personalization}},
@@ -8823,7 +8831,7 @@ adb shell cmd thermalservice override-status 2</code></pre>
             <span style="display: block; margin-top: 8px; font-size: 11px; color: var(--ink-400);">
               Accessibility: Conforms to WCAG 2.2 AA. Includes keyboard navigation, skip links,
               focus-visible outlines, reduced-motion support, forced-colors support, and semantic HTML.
-              Report issues to: github.com/Made-in-Jurgistan/android-keyboard-design-guide-3d-personalization-2026/issues
+              Report issues to: github.com/Made-in-Jurgistan/android-keyboard-design-guide-3d-personalization/issues
             </span>
             <a href="#cover" class="return-to-top-link">↑ Return to top</a>
           </div>
@@ -8872,151 +8880,6 @@ adb shell cmd thermalservice override-status 2</code></pre>
       })();
     </script>
 
-    <!-- Paged.js polyfill for CSS Paged Media L3 (string-set, bookmark-level, named pages, margin boxes) -->
-    <script src="https://unpkg.com/pagedjs/dist/paged.polyfill.js"></script>
 
-    <!-- Syntax highlighter — auto-applies .kw/.fn/.ty/.str/.cm/.num spans to <pre><code> blocks -->
-    <script>
-    (function () {
-      'use strict';
-
-      var KW = ['val','var','fun','class','object','interface','override','private','public','protected','internal','companion','suspend','async','await','launch','import','package','if','else','when','for','while','do','return','break','continue','try','catch','finally','throw','null','true','false','this','super','is','as','in','out','by','lateinit','const','enum','sealed','data','abstract','open','annotation','vararg','noinline','crossinline','inline','reified','tailrec','operator','infix','typealias','where','get','set','field','it','init','constructor','dynamic'];
-      var KW_RE = new RegExp('\\b(' + KW.join('|') + ')\\b', 'g');
-
-      var GLSL_KW = ['attribute','uniform','varying','in','out','inout','precision','highp','mediump','lowp','void','float','int','bool','vec2','vec3','vec4','mat2','mat3','mat4','sampler2D','samplerCube','const','if','else','for','while','do','return','break','continue','discard','true','false','struct','layout','location','binding','set','push_constant','readonly','writeonly','coherent','volatile','restrict','flat','smooth','noperspective','centroid','patch','sample','invariant','precise','centroid'];
-      var GLSL_KW_RE = new RegExp('\\b(' + GLSL_KW.join('|') + ')\\b', 'g');
-
-      function esc(s) {
-        return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-      }
-
-      function highlightKotlin(code) {
-        var tokens = [];
-        var placeholder = function (cls, text) {
-          var i = tokens.length;
-          tokens.push('<span class="' + cls + '">' + esc(text) + '</span>');
-          return '\x00' + i + '\x00';
-        };
-        var s = code;
-        s = s.replace(/\/\/[^\n]*/g, function(m){ return placeholder('cm', m); });
-        s = s.replace(/\/\*[\s\S]*?\*\//g, function(m){ return placeholder('cm', m); });
-        s = s.replace(/"(?:[^"\\]|\\.)*"/g, function(m){ return placeholder('str', m); });
-        s = s.replace(/@[A-Za-z_]\w*/g, function(m){ return placeholder('an', m); });
-        s = s.replace(/\b\d+\.?\d*[fLdD]?\b/g, function(m){ return placeholder('num', m); });
-        s = s.replace(/\b([A-Z][A-Za-z0-9_]*)\b/g, function(m){ return placeholder('ty', m); });
-        s = s.replace(KW_RE, function(m){ return placeholder('kw', m); });
-        s = s.replace(/\.([a-z_]\w*)(\s*\()/g, function(m, fn){ return '.' + placeholder('fn', fn) + '('; });
-        s = s.replace(/\b([a-z_]\w*)(\s*\()/g, function(m, fn){ return placeholder('fn', fn) + '('; });
-        s = esc(s);
-        s = s.replace(/\x00(\d+)\x00/g, function(m, i){ return tokens[parseInt(i)]; });
-        return s;
-      }
-
-      function highlightGLSL(code) {
-        var tokens = [];
-        var placeholder = function (cls, text) {
-          var i = tokens.length;
-          tokens.push('<span class="' + cls + '">' + esc(text) + '</span>');
-          return '\x00' + i + '\x00';
-        };
-        var s = code;
-        s = s.replace(/\/\/[^\n]*/g, function(m){ return placeholder('cm', m); });
-        s = s.replace(/\/\*[\s\S]*?\*\//g, function(m){ return placeholder('cm', m); });
-        s = s.replace(/"(?:[^"\\]|\\.)*"/g, function(m){ return placeholder('str', m); });
-        s = s.replace(/#[^\n]*/g, function(m){ return placeholder('tg', m); });
-        s = s.replace(/\b\d+\.?\d*\b/g, function(m){ return placeholder('num', m); });
-        s = s.replace(/\b([A-Z][A-Za-z0-9_]*)\b/g, function(m){ return placeholder('ty', m); });
-        s = s.replace(GLSL_KW_RE, function(m){ return placeholder('kw', m); });
-        s = s.replace(/\.([a-z_]\w*)(\s*\()/g, function(m, fn){ return '.' + placeholder('fn', fn) + '('; });
-        s = s.replace(/\b([a-z_]\w*)(\s*\()/g, function(m, fn){ return placeholder('fn', fn) + '('; });
-        s = esc(s);
-        s = s.replace(/\x00(\d+)\x00/g, function(m, i){ return tokens[parseInt(i)]; });
-        return s;
-      }
-
-      function highlightXML(code) {
-        var tokens = [];
-        var placeholder = function (cls, text) {
-          var i = tokens.length;
-          tokens.push('<span class="' + cls + '">' + esc(text) + '</span>');
-          return '\x00' + i + '\x00';
-        };
-        var s = code;
-        s = s.replace(/&lt;!--[\s\S]*?--&gt;/g, function(m){ return placeholder('cm', m); });
-        s = s.replace(/&lt;\/?[A-Za-z][\w.-]*/g, function(m){ return placeholder('tg', m); });
-        s = s.replace(/[A-Za-z:]+(?==)/g, function(m){ return placeholder('at', m); });
-        s = s.replace(/"(?:[^"\\]|\\.)*"/g, function(m){ return placeholder('str', m); });
-        s = esc(s);
-        s = s.replace(/\x00(\d+)\x00/g, function(m, i){ return tokens[parseInt(i)]; });
-        return s;
-      }
-
-      function highlightGradle(code) {
-        return highlightKotlin(code);
-      }
-
-      function highlightShell(code) {
-        var tokens = [];
-        var placeholder = function (cls, text) {
-          var i = tokens.length;
-          tokens.push('<span class="' + cls + '">' + esc(text) + '</span>');
-          return '\x00' + i + '\x00';
-        };
-        var s = code;
-        s = s.replace(/#[^\n]*/g, function(m){ return placeholder('cm', m); });
-        s = s.replace(/"(?:[^"\\]|\\.)*"/g, function(m){ return placeholder('str', m); });
-        s = s.replace(/\b(adb|shell|ime|enable|disable|set|get|dumpsys|pm|am|install|uninstall|matc)\b/g, function(m){ return placeholder('kw', m); });
-        s = s.replace(/\b\d+\b/g, function(m){ return placeholder('num', m); });
-        s = esc(s);
-        s = s.replace(/\x00(\d+)\x00/g, function(m, i){ return tokens[parseInt(i)]; });
-        return s;
-      }
-
-      function highlightFilamentMaterial(code) {
-        var tokens = [];
-        var placeholder = function (cls, text) {
-          var i = tokens.length;
-          tokens.push('<span class="' + cls + '">' + esc(text) + '</span>');
-          return '\x00' + i + '\x00';
-        };
-        var s = code;
-        s = s.replace(/\/\/[^\n]*/g, function(m){ return placeholder('cm', m); });
-        s = s.replace(/"(?:[^"\\]|\\.)*"/g, function(m){ return placeholder('str', m); });
-        s = s.replace(/\b(material|name|shadingModel|parameters|requires|blending|variant|samplerParameter|materialParameters)\b/g, function(m){ return placeholder('kw', m); });
-        s = s.replace(/\b(lit|unlit|subsurface|cloth|specularGlossiness)\b/g, function(m){ return placeholder('ty', m); });
-        s = s.replace(/\b\d+\.?\d*\b/g, function(m){ return placeholder('num', m); });
-        s = esc(s);
-        s = s.replace(/\x00(\d+)\x00/g, function(m, i){ return tokens[parseInt(i)]; });
-        return s;
-      }
-
-      function applyHighlighting() {
-        var pres = document.querySelectorAll('pre');
-        pres.forEach(function (pre) {
-          var code = pre.querySelector('code');
-          if (!code || code.dataset.highlighted) return;
-          var langSpan = pre.querySelector('.code-lang');
-          var lang = langSpan ? (langSpan.textContent || '').trim().toLowerCase() : '';
-          var html = code.textContent;
-          var result;
-          if (lang.indexOf('kotlin') !== -1) result = highlightKotlin(html);
-          else if (lang.indexOf('glsl') !== -1) result = highlightGLSL(html);
-          else if (lang.indexOf('xml') !== -1 || lang.indexOf('manifest') !== -1) result = highlightXML(html);
-          else if (lang.indexOf('gradle') !== -1) result = highlightGradle(html);
-          else if (lang.indexOf('bash') !== -1 || lang.indexOf('shell') !== -1) result = highlightShell(html);
-          else if (lang.indexOf('filament') !== -1) result = highlightFilamentMaterial(html);
-          else result = esc(html);
-          code.innerHTML = result;
-          code.dataset.highlighted = 'true';
-        });
-      }
-
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', applyHighlighting);
-      } else {
-        applyHighlighting();
-      }
-    })();
-    </script>
   </body>
 </html>
