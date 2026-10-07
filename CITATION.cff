@@ -5,7 +5,7 @@ type: software
 authors:
   - name: "Made in Jurgistan"
     website: "https://Made-in-Jurgistan.github.io"
-repository-code: "https://github.com/Made-in-Jurgistan/android-keyboard-design-guide-3d-personalization-2026"
+repository-code: "https://github.com/Made-in-Jurgistan/android-keyboard-design-guide-3d-personalization"
 url: "https://Made-in-Jurgistan.github.io/android-keyboard-design-guide-3d-personalization/"
 version: "2026.2.0"
 date-released: "2026-01-15"
