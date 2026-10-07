@@ -63,6 +63,7 @@
         "@context": "https://schema.org",
         "@type": "TechArticle",
         "headline": "Android Keyboard Design Guide: 3D & Personalization",
+        "url": "https://Made-in-Jurgistan.github.io/android-keyboard-design-guide-3d-personalization/",
         "description": "Companion volume covering 3D rendering, PBR materials, custom themes, and game engine bridges for Android IMEs.",
         "author": {
           "@type": "Organization",
@@ -90,7 +91,7 @@
         "accessibilitySummary": "Conforms to WCAG 2.2 AA. Includes keyboard navigation, skip links, focus management, reduced-motion support, and semantic HTML.",
         "isPartOf": {
           "@type": "CreativeWorkSeries",
-          "name": "Android Keyboard Design Guide"
+          "name": "Made in Jurgistan Guides"
         }
       }
     </script>
@@ -2245,6 +2246,25 @@
         section > :nth-last-child(-n+2) { margin-bottom: 0 !important; }
         .back-to-top, .return-to-top { margin: 0 !important; padding: 0 !important; border: 0 !important; height: 0; overflow: hidden; }
       }
+    
+      /* ── Level badge sits beside the heading, not inside it (clean outline, bookmarks and screen-reader names) ── */
+      .heading-row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
+      .heading-row > h2, .heading-row > h3, .heading-row > h4 { margin: 0; }
+      @media print { .heading-row { break-after: avoid; break-inside: avoid; } }
+    
+      .series-links { flex: 0 0 100%; grid-column: 1 / -1; margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--ink-100); font-size: 12.5px; color: var(--ink-500); }
+      .series-links ul { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 18px; }
+      @media print { .series-links { display: none; } }
+    
+      /* ── Copy button on code blocks ── */
+      pre { position: relative; }
+      .copy-btn { position: absolute; bottom: 6px; right: 6px; display: inline-flex; align-items: center; gap: 5px; font: 500 11px/1 var(--f-body);
+        color: var(--ink-600); background: var(--paper); border: 1px solid var(--ink-200); border-radius: 5px; padding: 5px 9px; min-height: 24px; cursor: pointer;
+        opacity: 0; transition: opacity 0.15s; user-select: none; -webkit-user-select: none; }
+      pre:hover .copy-btn, pre:focus-within .copy-btn, .copy-btn:focus-visible { opacity: 1; }
+      .copy-btn:hover { color: var(--accent-ink, var(--accent)); border-color: var(--accent-bd); }
+      @media (hover: none) { .copy-btn { opacity: 1; } }
+      @media print { .copy-btn { display: none !important; } }
     </style>
   </head>
   <body>
@@ -2390,7 +2410,7 @@
         <section id="s01">
           <div class="chapter">
             <span class="chapter-num">Section 01</span>
-            <h2>About This Volume <span class="badge b-beginner">Beginner</span></h2>
+            <div class="heading-row heading-row-2"><h2>About This Volume</h2><span class="badge b-beginner">Beginner</span></div>
             <p class="ch-desc">
               Scope, prerequisites, and how this extension fits into the broader keyboard design
               series
@@ -2439,32 +2459,32 @@
               <div class="role-icon" data-icon="palette"></div>
               <div class="role-title">Designer / Theme Author</div>
               <div class="role-start">
-                Start with <a href="#s17">§17 Layout XML</a> → <a href="#s19">§19 Theme Engine</a> →
-                <a href="#s20">§20 Backgrounds</a> → <a href="#s22">§22 Fonts</a>
+                Start with <a href="#s17">Section 17 Layout XML</a> → <a href="#s19">Section 19 Theme Engine</a> →
+                <a href="#s20">Section 20 Backgrounds</a> → <a href="#s22">Section 22 Fonts</a>
               </div>
             </div>
             <div class="role-card">
               <div class="role-icon" data-icon="settings"></div>
               <div class="role-title">Android Engineer</div>
               <div class="role-start">
-                Start with <a href="#s04">§04 OpenGL ES</a> → <a href="#s05">§05 GLSurfaceView</a> →
-                <a href="#s13">§13 Canvas</a> → <a href="#s28">§28 Performance</a>
+                Start with <a href="#s04">Section 04 OpenGL ES</a> → <a href="#s05">Section 05 GLSurfaceView</a> →
+                <a href="#s13">Section 13 Canvas</a> → <a href="#s28">Section 28 Performance</a>
               </div>
             </div>
             <div class="role-card">
               <div class="role-icon" data-icon="flashlight"></div>
               <div class="role-title">3D / Graphics Engineer</div>
               <div class="role-start">
-                Start with <a href="#s07">§07 GLSL Shaders</a> → <a href="#s09">§09 Filament</a> →
-                <a href="#s12">§12 IBL</a> → <a href="#s25">§25 AR Keyboard</a>
+                Start with <a href="#s07">Section 07 GLSL Shaders</a> → <a href="#s09">Section 09 Filament</a> →
+                <a href="#s12">Section 12 IBL</a> → <a href="#s25">Section 25 AR Keyboard</a>
               </div>
             </div>
             <div class="role-card">
               <div class="role-icon" data-icon="gamepad"></div>
               <div class="role-title">Game Developer</div>
               <div class="role-start">
-                Start with <a href="#s23">§23 Unity</a> → <a href="#s24">§24 Godot</a> →
-                <a href="#s14">§14 Compose Shaders</a>
+                Start with <a href="#s23">Section 23 Unity</a> → <a href="#s24">Section 24 Godot</a> →
+                <a href="#s14">Section 14 Compose Shaders</a>
               </div>
             </div>
           </div>
@@ -2492,9 +2512,7 @@
           <div class="section-break"></div>
           <div class="chapter">
             <span class="chapter-num">Section 02</span>
-            <h2>
-              Rendering Architecture Overview <span class="badge b-intermediate">Intermediate</span>
-            </h2>
+            <div class="heading-row heading-row-2"><h2>Rendering Architecture Overview</h2><span class="badge b-intermediate">Intermediate</span></div>
             <p class="ch-desc">
               Comparing all available rendering pipelines — from Android Canvas to Filament PBR —
               and choosing the right one
@@ -2511,13 +2529,13 @@
             <table>
               <thead>
                 <tr>
-                  <th>Rendering Path</th>
-                  <th>API Level</th>
-                  <th>3D Capable</th>
-                  <th>PBR</th>
-                  <th>Compose Compatible</th>
-                  <th>GPU Cost</th>
-                  <th>Best For</th>
+                  <th scope="col">Rendering Path</th>
+                  <th scope="col">API Level</th>
+                  <th scope="col">3D Capable</th>
+                  <th scope="col">PBR</th>
+                  <th scope="col">Compose Compatible</th>
+                  <th scope="col">GPU Cost</th>
+                  <th scope="col">Best For</th>
                 </tr>
               </thead>
               <tbody>
@@ -2626,7 +2644,7 @@
           <div class="section-break"></div>
           <div class="chapter">
             <span class="chapter-num">Section 03</span>
-            <h2>Open Source Reference IMEs <span class="badge b-beginner">Beginner</span></h2>
+            <div class="heading-row heading-row-2"><h2>Open Source Reference IMEs</h2><span class="badge b-beginner">Beginner</span></div>
             <p class="ch-desc">
               The essential open-source keyboard projects — what each teaches, and where to find
               advanced rendering examples
@@ -2643,11 +2661,11 @@
             <table>
               <thead>
                 <tr>
-                  <th>Project</th>
-                  <th>License</th>
-                  <th>Language</th>
-                  <th>3D / Visual Features</th>
-                  <th>Best Learning Area</th>
+                  <th scope="col">Project</th>
+                  <th scope="col">License</th>
+                  <th scope="col">Language</th>
+                  <th scope="col">3D / Visual Features</th>
+                  <th scope="col">Best Learning Area</th>
                 </tr>
               </thead>
               <tbody>
@@ -2787,7 +2805,7 @@
           <div class="section-break"></div>
           <div class="chapter">
             <span class="chapter-num">Section 04</span>
-            <h2>OpenGL ES for Keyboards <span class="badge b-intermediate">Intermediate</span></h2>
+            <div class="heading-row heading-row-2"><h2>OpenGL ES for Keyboards</h2><span class="badge b-intermediate">Intermediate</span></div>
             <p class="ch-desc">
               The OpenGL ES rendering model, coordinate systems, and why keyboards present unique
               integration challenges
@@ -2807,10 +2825,10 @@
             <table>
               <thead>
                 <tr>
-                  <th>Version</th>
-                  <th>Android API</th>
-                  <th>Key Features Added</th>
-                  <th>Keyboard Use Case</th>
+                  <th scope="col">Version</th>
+                  <th scope="col">Android API</th>
+                  <th scope="col">Key Features Added</th>
+                  <th scope="col">Keyboard Use Case</th>
                 </tr>
               </thead>
               <tbody>
@@ -2902,7 +2920,7 @@
           <div class="section-break"></div>
           <div class="chapter">
             <span class="chapter-num">Section 05</span>
-            <h2>GLSurfaceView in an IME <span class="badge b-intermediate">Intermediate</span></h2>
+            <div class="heading-row heading-row-2"><h2>GLSurfaceView in an IME</h2><span class="badge b-intermediate">Intermediate</span></div>
             <p class="ch-desc">
               How to embed a GLSurfaceView inside InputMethodService, lifecycle synchronization, and
               EGL context management
@@ -3033,7 +3051,7 @@
           <div class="section-break"></div>
           <div class="chapter">
             <span class="chapter-num">Section 06</span>
-            <h2>3D Key Geometry &amp; Meshes <span class="badge b-expert">Expert</span></h2>
+            <div class="heading-row heading-row-2"><h2>3D Key Geometry &amp; Meshes</h2><span class="badge b-expert">Expert</span></div>
             <p class="ch-desc">
               Building beveled, rounded, and extruded key meshes in code — vertex arrays, index
               buffers, and procedural geometry
@@ -3161,7 +3179,7 @@ GLES30.<span class="fn">glDrawArraysInstanced</span>(
           <div class="section-break"></div>
           <div class="chapter">
             <span class="chapter-num">Section 07</span>
-            <h2>GLSL Shaders — Depth &amp; Bevel <span class="badge b-expert">Expert</span></h2>
+            <div class="heading-row heading-row-2"><h2>GLSL Shaders — Depth &amp; Bevel</h2><span class="badge b-expert">Expert</span></div>
             <p class="ch-desc">
               Complete GLSL ES shader pairs for bevel lighting, press animation, and material
               surface effects
@@ -3286,7 +3304,7 @@ GLES30.<span class="fn">glDrawArraysInstanced</span>(
           <div class="section-break"></div>
           <div class="chapter">
             <span class="chapter-num">Section 08</span>
-            <h2>Lighting Models for Keys <span class="badge b-expert">Expert</span></h2>
+            <div class="heading-row heading-row-2"><h2>Lighting Models for Keys</h2><span class="badge b-expert">Expert</span></div>
             <p class="ch-desc">
               Choosing and implementing the right lighting model — ambient, directional, IBL, and
               shadow approximation
@@ -3305,10 +3323,10 @@ GLES30.<span class="fn">glDrawArraysInstanced</span>(
             <table>
               <thead>
                 <tr>
-                  <th>Model</th>
-                  <th>GPU Cost</th>
-                  <th>Realism</th>
-                  <th>Best For</th>
+                  <th scope="col">Model</th>
+                  <th scope="col">GPU Cost</th>
+                  <th scope="col">Realism</th>
+                  <th scope="col">Best For</th>
                 </tr>
               </thead>
               <tbody>
@@ -3334,7 +3352,7 @@ GLES30.<span class="fn">glDrawArraysInstanced</span>(
                   <td><strong>Physically Based (PBR)</strong></td>
                   <td>Medium</td>
                   <td>Metal, glass, rubber accurate</td>
-                  <td>Premium keyboards; use Filament (§09)</td>
+                  <td>Premium keyboards; use Filament (Section 09)</td>
                 </tr>
                 <tr>
                   <td><strong>IBL (Image-Based Lighting)</strong></td>
@@ -3386,7 +3404,7 @@ GLES30.<span class="fn">glDrawArraysInstanced</span>(
           <div class="section-break"></div>
           <div class="chapter">
             <span class="chapter-num">Section 09</span>
-            <h2>Filament Integration <span class="badge b-expert">Expert</span></h2>
+            <div class="heading-row heading-row-2"><h2>Filament Integration</h2><span class="badge b-expert">Expert</span></div>
             <p class="ch-desc">
               Embedding Google's Filament PBR engine inside an IME, Gradle setup, SurfaceView
               bridge, and engine lifecycle
@@ -3510,7 +3528,7 @@ dependencies {
           <div class="section-break"></div>
           <div class="chapter">
             <span class="chapter-num">Section 10</span>
-            <h2>PBR Materials on Keys <span class="badge b-expert">Expert</span></h2>
+            <div class="heading-row heading-row-2"><h2>PBR Materials on Keys</h2><span class="badge b-expert">Expert</span></div>
             <p class="ch-desc">
               Authoring Filament materials (.filamat) for metallic, rubber, glass, and custom key
               surfaces
@@ -3619,7 +3637,7 @@ matc -a opengl -p mobile -o src/main/assets/key_metal.filamat key_metal.mat</cod
           <div class="section-break"></div>
           <div class="chapter">
             <span class="chapter-num">Section 11</span>
-            <h2>SceneView &amp; Compose Bridge <span class="badge b-expert">Expert</span></h2>
+            <div class="heading-row heading-row-2"><h2>SceneView &amp; Compose Bridge</h2><span class="badge b-expert">Expert</span></div>
             <p class="ch-desc">
               Using SceneView (Filament + ARCore + Compose) as a higher-level alternative to raw
               Filament API calls
@@ -3719,7 +3737,7 @@ matc -a opengl -p mobile -o src/main/assets/key_metal.filamat key_metal.mat</cod
           <div class="section-break"></div>
           <div class="chapter">
             <span class="chapter-num">Section 12</span>
-            <h2>IBL Environment Lighting <span class="badge b-expert">Expert</span></h2>
+            <div class="heading-row heading-row-2"><h2>IBL Environment Lighting</h2><span class="badge b-expert">Expert</span></div>
             <p class="ch-desc">
               Image-based lighting for metallic and glass keys — HDR environment maps, KTX
               packaging, and tone mapping
@@ -3803,12 +3821,12 @@ cmgen \
             <table>
               <thead>
                 <tr>
-                  <th>Format</th>
-                  <th>HDR Support</th>
-                  <th>Mip&nbsp;Levels</th>
-                  <th>Android GPU</th>
-                  <th>Size (256²)</th>
-                  <th>Tool</th>
+                  <th scope="col">Format</th>
+                  <th scope="col">HDR Support</th>
+                  <th scope="col">Mip&nbsp;Levels</th>
+                  <th scope="col">Android GPU</th>
+                  <th scope="col">Size (256²)</th>
+                  <th scope="col">Tool</th>
                 </tr>
               </thead>
               <tbody>
@@ -3975,9 +3993,7 @@ cmgen \
           <div class="section-break"></div>
           <div class="chapter">
             <span class="chapter-num">Section 13</span>
-            <h2>
-              Canvas + Hardware Acceleration <span class="badge b-intermediate">Intermediate</span>
-            </h2>
+            <div class="heading-row heading-row-2"><h2>Canvas + Hardware Acceleration</h2><span class="badge b-intermediate">Intermediate</span></div>
             <p class="ch-desc">
               Achieving pseudo-3D depth, custom drawables, and hardware-layer compositing without
               any OpenGL code
@@ -4092,9 +4108,9 @@ keyView.<span class="fn">setLayerType</span>(<span class="ty">View.LAYER_TYPE_HA
             <table>
               <thead>
                 <tr>
-                  <th>BlendMode</th>
-                  <th>Visual Effect</th>
-                  <th>Keyboard Use Case</th>
+                  <th scope="col">BlendMode</th>
+                  <th scope="col">Visual Effect</th>
+                  <th scope="col">Keyboard Use Case</th>
                 </tr>
               </thead>
               <tbody>
@@ -4158,9 +4174,9 @@ keyView.<span class="fn">setLayerType</span>(<span class="ty">View.LAYER_TYPE_HA
             <table>
               <thead>
                 <tr>
-                  <th>Criterion</th>
-                  <th>Canvas (Hardware-Accelerated)</th>
-                  <th>OpenGL&nbsp;ES / Filament</th>
+                  <th scope="col">Criterion</th>
+                  <th scope="col">Canvas (Hardware-Accelerated)</th>
+                  <th scope="col">OpenGL&nbsp;ES / Filament</th>
                 </tr>
               </thead>
               <tbody>
@@ -4255,9 +4271,7 @@ keyView.<span class="fn">setLayerType</span>(<span class="ty">View.LAYER_TYPE_HA
           <div class="section-break"></div>
           <div class="chapter">
             <span class="chapter-num">Section 14</span>
-            <h2>
-              ComposeUI Shader Effects — AGSL <span class="badge b-intermediate">Intermediate</span>
-            </h2>
+            <div class="heading-row heading-row-2"><h2>ComposeUI Shader Effects — AGSL</h2><span class="badge b-intermediate">Intermediate</span></div>
             <p class="ch-desc">
               Android Graphics Shading Language (AGSL) in Jetpack Compose: animated gradients, noise
               textures, blur, and distortion on key surfaces
@@ -4340,9 +4354,9 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
             <table>
               <thead>
                 <tr>
-                  <th>Feature</th>
-                  <th>GLSL&nbsp;ES&nbsp;3.0</th>
-                  <th>AGSL</th>
+                  <th scope="col">Feature</th>
+                  <th scope="col">GLSL&nbsp;ES&nbsp;3.0</th>
+                  <th scope="col">AGSL</th>
                 </tr>
               </thead>
               <tbody>
@@ -4539,9 +4553,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
           <div class="section-break"></div>
           <div class="chapter">
             <span class="chapter-num">Section 15</span>
-            <h2>
-              TextureView Overlay Techniques <span class="badge b-intermediate">Intermediate</span>
-            </h2>
+            <div class="heading-row heading-row-2"><h2>TextureView Overlay Techniques</h2><span class="badge b-intermediate">Intermediate</span></div>
             <p class="ch-desc">
               Using TextureView to layer live video, camera feeds, or OpenGL output behind a Canvas
               key layer
@@ -4599,10 +4611,10 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
             <table>
               <thead>
                 <tr>
-                  <th>Feature</th>
-                  <th>SurfaceView</th>
-                  <th>TextureView</th>
-                  <th>GLSurfaceView</th>
+                  <th scope="col">Feature</th>
+                  <th scope="col">SurfaceView</th>
+                  <th scope="col">TextureView</th>
+                  <th scope="col">GLSurfaceView</th>
                 </tr>
               </thead>
               <tbody>
@@ -4784,7 +4796,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
           <div class="section-break"></div>
           <div class="chapter">
             <span class="chapter-num">Section 16</span>
-            <h2>Particle &amp; Ripple Systems <span class="badge b-expert">Expert</span></h2>
+            <div class="heading-row heading-row-2"><h2>Particle &amp; Ripple Systems</h2><span class="badge b-expert">Expert</span></div>
             <p class="ch-desc">
               Per-keystroke particle effects: sparks, confetti, ink splatter, ripples — GPU-driven
               particle simulation
@@ -4887,7 +4899,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
           <div class="section-break"></div>
           <div class="chapter">
             <span class="chapter-num">Section 17</span>
-            <h2>Custom Layout XML Architecture <span class="badge b-beginner">Beginner</span></h2>
+            <div class="heading-row heading-row-2"><h2>Custom Layout XML Architecture</h2><span class="badge b-beginner">Beginner</span></div>
             <p class="ch-desc">
               Designing a flexible, extensible key layout XML schema — beyond the standard Android
               Keyboard class
@@ -4989,9 +5001,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
           <div class="section-break"></div>
           <div class="chapter">
             <span class="chapter-num">Section 18</span>
-            <h2>
-              Per-Key Shape &amp; Geometry <span class="badge b-intermediate">Intermediate</span>
-            </h2>
+            <div class="heading-row heading-row-2"><h2>Per-Key Shape &amp; Geometry</h2><span class="badge b-intermediate">Intermediate</span></div>
             <p class="ch-desc">
               Hexagonal keys, circular keys, organic free-form shapes — custom hit detection and
               rendering for non-rectangular keys
@@ -5012,10 +5022,10 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
             <table>
               <thead>
                 <tr>
-                  <th>Shape</th>
-                  <th>Hit Detection</th>
-                  <th>Rendering Technique</th>
-                  <th>Use Case</th>
+                  <th scope="col">Shape</th>
+                  <th scope="col">Hit Detection</th>
+                  <th scope="col">Rendering Technique</th>
+                  <th scope="col">Use Case</th>
                 </tr>
               </thead>
               <tbody>
@@ -5087,7 +5097,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
           <div class="section-break"></div>
           <div class="chapter">
             <span class="chapter-num">Section 19</span>
-            <h2>Dynamic Theme Engine <span class="badge b-intermediate">Intermediate</span></h2>
+            <div class="heading-row heading-row-2"><h2>Dynamic Theme Engine</h2><span class="badge b-intermediate">Intermediate</span></div>
             <p class="ch-desc">
               Building a typed, JSON-backed theme system with live preview, Material You
               integration, and user-editable parameters
@@ -5186,9 +5196,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
           <div class="section-break"></div>
           <div class="chapter">
             <span class="chapter-num">Section 20</span>
-            <h2>
-              User-Uploaded Backgrounds <span class="badge b-intermediate">Intermediate</span>
-            </h2>
+            <div class="heading-row heading-row-2"><h2>User-Uploaded Backgrounds</h2><span class="badge b-intermediate">Intermediate</span></div>
             <p class="ch-desc">
               Safely loading, resizing, caching, and blurring user-provided images as keyboard
               backgrounds — with GDPR-conscious storage
@@ -5325,9 +5333,9 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
             <table>
               <thead>
                 <tr>
-                  <th>Format</th>
-                  <th>Supported Since</th>
-                  <th>Notes</th>
+                  <th scope="col">Format</th>
+                  <th scope="col">Supported Since</th>
+                  <th scope="col">Notes</th>
                 </tr>
               </thead>
               <tbody>
@@ -5416,7 +5424,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
           <div class="section-break"></div>
           <div class="chapter">
             <span class="chapter-num">Section 21</span>
-            <h2>Sound &amp; Haptic Packs <span class="badge b-intermediate">Intermediate</span></h2>
+            <div class="heading-row heading-row-2"><h2>Sound &amp; Haptic Packs</h2><span class="badge b-intermediate">Intermediate</span></div>
             <p class="ch-desc">
               Designing a theme-based audio and haptic system with user-selectable packs, per-key
               audio, and VibrationEffect composition
@@ -5544,11 +5552,11 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
             <table>
               <thead>
                 <tr>
-                  <th>Format</th>
-                  <th>Codec</th>
-                  <th>Min&nbsp;API</th>
-                  <th>Typical Latency</th>
-                  <th>Notes</th>
+                  <th scope="col">Format</th>
+                  <th scope="col">Codec</th>
+                  <th scope="col">Min&nbsp;API</th>
+                  <th scope="col">Typical Latency</th>
+                  <th scope="col">Notes</th>
                 </tr>
               </thead>
               <tbody>
@@ -5675,11 +5683,11 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
             <table>
               <thead>
                 <tr>
-                  <th>Key Role</th>
-                  <th>Primitive (API&nbsp;31+)</th>
-                  <th>Fallback (API&nbsp;26+)</th>
-                  <th>Intensity</th>
-                  <th>UX Rationale</th>
+                  <th scope="col">Key Role</th>
+                  <th scope="col">Primitive (API&nbsp;31+)</th>
+                  <th scope="col">Fallback (API&nbsp;26+)</th>
+                  <th scope="col">Intensity</th>
+                  <th scope="col">UX Rationale</th>
                 </tr>
               </thead>
               <tbody>
@@ -5868,9 +5876,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
           <div class="section-break"></div>
           <div class="chapter">
             <span class="chapter-num">Section 22</span>
-            <h2>
-              Font &amp; Label Customization <span class="badge b-intermediate">Intermediate</span>
-            </h2>
+            <div class="heading-row heading-row-2"><h2>Font &amp; Label Customization</h2><span class="badge b-intermediate">Intermediate</span></div>
             <p class="ch-desc">
               Custom typefaces on key labels — loading TTF/OTF fonts, variable fonts, icon fonts,
               and rendering at multiple scales
@@ -5928,7 +5934,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
           <!-- ── 22 B  Text Measurement & Fitting ── -->
           <h3>Text Measurement &amp; Label Fitting</h3>
           <p>
-            Key labels must be centred both horizontally and vertically inside an arbitrarily sized
+            Key labels must be centered both horizontally and vertically inside an arbitrarily sized
             cap. Use <code>Paint.getTextBounds()</code> for bounding-box metrics and
             <code>Paint.measureText()</code> for advance-width. The difference matters:
             <code>getTextBounds()</code>
@@ -6054,11 +6060,11 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
             <table>
               <thead>
                 <tr>
-                  <th>Script</th>
-                  <th>Direction</th>
-                  <th>Shaping</th>
-                  <th>Recommended Font</th>
-                  <th>Notes</th>
+                  <th scope="col">Script</th>
+                  <th scope="col">Direction</th>
+                  <th scope="col">Shaping</th>
+                  <th scope="col">Recommended Font</th>
+                  <th scope="col">Notes</th>
                 </tr>
               </thead>
               <tbody>
@@ -6161,7 +6167,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
                 class="ext" target="_blank" rel="noopener"
                 >Downloadable Fonts Guide</a
               >
-              — Google Fonts provider integration and cache behaviour.
+              — Google Fonts provider integration and cache behavior.
             </li>
             <li>
               <a
@@ -6197,7 +6203,7 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
           <div class="section-break"></div>
           <div class="chapter">
             <span class="chapter-num">Section 23</span>
-            <h2>Unity Android Plugin <span class="badge b-expert">Expert</span></h2>
+            <div class="heading-row heading-row-2"><h2>Unity Android Plugin</h2><span class="badge b-expert">Expert</span></div>
             <p class="ch-desc">
               Embedding a Unity scene as the keyboard's rendering layer — plugin lifecycle,
               UnityPlayer integration, and input routing
@@ -6299,7 +6305,7 @@ dependencies {
           <div class="section-break"></div>
           <div class="chapter">
             <span class="chapter-num">Section 24</span>
-            <h2>Godot Android Library <span class="badge b-expert">Expert</span></h2>
+            <div class="heading-row heading-row-2"><h2>Godot Android Library</h2><span class="badge b-expert">Expert</span></div>
             <p class="ch-desc">
               Using Godot's Android library (GodotFragment / GodotHost) to render a keyboard scene,
               Godot–Android signal bridge, and input routing
@@ -6478,10 +6484,10 @@ signal key_released(label: <span class="ty">String</span>)
             <table>
               <thead>
                 <tr>
-                  <th>Criteria</th>
-                  <th>Godot 4.x</th>
-                  <th>Unity (as Library)</th>
-                  <th>Native OpenGL&nbsp;ES / Vulkan</th>
+                  <th scope="col">Criteria</th>
+                  <th scope="col">Godot 4.x</th>
+                  <th scope="col">Unity (as Library)</th>
+                  <th scope="col">Native OpenGL&nbsp;ES / Vulkan</th>
                 </tr>
               </thead>
               <tbody>
@@ -6597,7 +6603,7 @@ signal key_released(label: <span class="ty">String</span>)
           <div class="section-break"></div>
           <div class="chapter">
             <span class="chapter-num">Section 25</span>
-            <h2>AR Keyboard with Sceneform <span class="badge b-expert">Expert</span></h2>
+            <div class="heading-row heading-row-2"><h2>AR Keyboard with Sceneform</h2><span class="badge b-expert">Expert</span></div>
             <p class="ch-desc">
               Augmented Reality keys that float in the real world — Sceneform/ARCore setup, plane
               detection, and overlay routing for IME
@@ -6670,7 +6676,7 @@ implementation(<span class="str">"io.github.sceneview:arsceneview:2.2.1"</span>)
           <h3>Key Node Placement &amp; Grid Layout</h3>
           <p>
             Once a horizontal plane is detected, individual key nodes are placed in a 3×10 grid
-            anchored to the plane's centre. Each key is a
+            anchored to the plane's center. Each key is a
             <code>ModelNode</code> loaded from a <code>.glb</code> asset, scaled to approximate
             physical key size in AR space (≈ 16 mm square at arm's length).
           </p>
@@ -6826,10 +6832,10 @@ implementation(<span class="str">"io.github.sceneview:arsceneview:2.2.1"</span>)
             <table>
               <thead>
                 <tr>
-                  <th>Criterion</th>
-                  <th>SceneView / ARSceneView</th>
-                  <th>Raw ARCore</th>
-                  <th>OpenXR (Khronos)</th>
+                  <th scope="col">Criterion</th>
+                  <th scope="col">SceneView / ARSceneView</th>
+                  <th scope="col">Raw ARCore</th>
+                  <th scope="col">OpenXR (Khronos)</th>
                 </tr>
               </thead>
               <tbody>
@@ -6948,7 +6954,7 @@ implementation(<span class="str">"io.github.sceneview:arsceneview:2.2.1"</span>)
           <div class="section-break"></div>
           <div class="chapter">
             <span class="chapter-num">Section 26</span>
-            <h2>AI-Driven Personalization <span class="badge b-expert">Expert</span></h2>
+            <div class="heading-row heading-row-2"><h2>AI-Driven Personalization</h2><span class="badge b-expert">Expert</span></div>
             <p class="ch-desc">
               On-device ML for adaptive themes, predictive color selection, typing pattern
               detection, and federated learning principles
@@ -7114,12 +7120,12 @@ implementation(<span class="str">"org.tensorflow:tensorflow-lite-support:0.4.4"<
             <table>
               <thead>
                 <tr>
-                  <th>Quantization</th>
-                  <th>Precision</th>
-                  <th>Size reduction</th>
-                  <th>Latency impact</th>
-                  <th>Accuracy loss</th>
-                  <th>Toolchain</th>
+                  <th scope="col">Quantization</th>
+                  <th scope="col">Precision</th>
+                  <th scope="col">Size reduction</th>
+                  <th scope="col">Latency impact</th>
+                  <th scope="col">Accuracy loss</th>
+                  <th scope="col">Toolchain</th>
                 </tr>
               </thead>
               <tbody>
@@ -7240,10 +7246,10 @@ tflite_quant = converter.<span class="fn">convert</span>()
             <table>
               <thead>
                 <tr>
-                  <th>Criterion</th>
-                  <th>TensorFlow Lite</th>
-                  <th>ONNX Runtime Mobile</th>
-                  <th>PyTorch Mobile (ExecuTorch)</th>
+                  <th scope="col">Criterion</th>
+                  <th scope="col">TensorFlow Lite</th>
+                  <th scope="col">ONNX Runtime Mobile</th>
+                  <th scope="col">PyTorch Mobile (ExecuTorch)</th>
                 </tr>
               </thead>
               <tbody>
@@ -7372,9 +7378,7 @@ tflite_quant = converter.<span class="fn">convert</span>()
           <div class="section-break"></div>
           <div class="chapter">
             <span class="chapter-num">Section 27</span>
-            <h2>
-              Live Wallpaper Background Keys <span class="badge b-intermediate">Intermediate</span>
-            </h2>
+            <div class="heading-row heading-row-2"><h2>Live Wallpaper Background Keys</h2><span class="badge b-intermediate">Intermediate</span></div>
             <p class="ch-desc">
               Syncing the keyboard background with the device's live wallpaper colors and motion via
               WallpaperManager
@@ -7529,8 +7533,8 @@ tflite_quant = converter.<span class="fn">convert</span>()
 
           <h3>Animated Color Transitions</h3>
           <p>
-            Snapping to new colours instantly is jarring. Animate the transition over 400–600 ms
-            using <code>ValueAnimator</code> on each colour channel so the keyboard smoothly morphs
+            Snapping to new colors instantly is jarring. Animate the transition over 400–600 ms
+            using <code>ValueAnimator</code> on each color channel so the keyboard smoothly morphs
             as the wallpaper changes.
           </p>
 
@@ -7577,11 +7581,11 @@ tflite_quant = converter.<span class="fn">convert</span>()
 
           <h3>Contrast Validation</h3>
           <p>
-            Wallpaper-derived colours may produce low-contrast key labels. Check against
+            Wallpaper-derived colors may produce low-contrast key labels. Check against
             <a class="ext" target="_blank" rel="noopener" href="https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html"
               >WCAG 2.2 contrast minimum (AA = 4.5 : 1) ↗</a
             >
-            and fall back to guaranteed-contrast colours when the ratio is too low.
+            and fall back to guaranteed-contrast colors when the ratio is too low.
           </p>
 
           <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="kw">object</span> <span class="ty">ContrastChecker</span> {
@@ -7619,9 +7623,9 @@ tflite_quant = converter.<span class="fn">convert</span>()
             <div class="callout-body">
               <strong>Live Wallpaper Rate Limiting</strong>
               <p>
-                Some live wallpapers shift colours every frame. Without throttling,
+                Some live wallpapers shift colors every frame. Without throttling,
                 <code>OnColorsChangedListener</code> could trigger theme rebuilds dozens of times
-                per second. Debounce colour change callbacks to
+                per second. Debounce color change callbacks to
                 <strong>at most once per 2 seconds</strong> using
                 <code>Handler.postDelayed()</code> or a Kotlin <code>Flow.debounce(2000)</code>.
               </p>
@@ -7633,18 +7637,18 @@ tflite_quant = converter.<span class="fn">convert</span>()
             <table>
               <thead>
                 <tr>
-                  <th>API</th>
-                  <th>Min SDK</th>
-                  <th>Provides</th>
-                  <th>Fires on</th>
-                  <th>Best for</th>
+                  <th scope="col">API</th>
+                  <th scope="col">Min SDK</th>
+                  <th scope="col">Provides</th>
+                  <th scope="col">Fires on</th>
+                  <th scope="col">Best for</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td><code>ACTION_WALLPAPER_CHANGED</code></td>
                   <td>1</td>
-                  <td>Intent only (no colours)</td>
+                  <td>Intent only (no colors)</td>
                   <td>Static wallpaper replacement</td>
                   <td>Legacy fallback</td>
                 </tr>
@@ -7652,7 +7656,7 @@ tflite_quant = converter.<span class="fn">convert</span>()
                   <td><code>WallpaperColors</code></td>
                   <td>27</td>
                   <td>Primary / secondary / tertiary + hints</td>
-                  <td>Static and live wallpaper colour change</td>
+                  <td>Static and live wallpaper color change</td>
                   <td>Custom palette extraction</td>
                 </tr>
                 <tr>
@@ -7690,10 +7694,10 @@ tflite_quant = converter.<span class="fn">convert</span>()
             <li>
               <strong>Multi-display devices:</strong> Foldables may have separate wallpapers for
               inner and outer screens. Listen to <code>Configuration.densityDpi</code> changes to
-              detect display switches and re-query colours.
+              detect display switches and re-query colors.
             </li>
             <li>
-              <strong>Wallpaper not set:</strong> Some OEMs return a solid colour as the "default
+              <strong>Wallpaper not set:</strong> Some OEMs return a solid color as the "default
               wallpaper". Detect this by checking
               <code>primaryColor == secondaryColor == tertiaryColor</code> and use a branded
               fallback instead.
@@ -7742,7 +7746,7 @@ tflite_quant = converter.<span class="fn">convert</span>()
           <div class="section-break"></div>
           <div class="chapter">
             <span class="chapter-num">Section 28</span>
-            <h2>Performance Budgets for 3D <span class="badge b-expert">Expert</span></h2>
+            <div class="heading-row heading-row-2"><h2>Performance Budgets for 3D</h2><span class="badge b-expert">Expert</span></div>
             <p class="ch-desc">
               Frame timing budgets, thermal throttling management, and profiling tools for
               GPU-accelerated keyboards
@@ -7864,9 +7868,7 @@ tflite_quant = converter.<span class="fn">convert</span>()
           <div class="section-break"></div>
           <div class="chapter">
             <span class="chapter-num">Section 29</span>
-            <h2>
-              QA Checklist — 3D &amp; Visual <span class="badge b-intermediate">Intermediate</span>
-            </h2>
+            <div class="heading-row heading-row-2"><h2>QA Checklist — 3D &amp; Visual</h2><span class="badge b-intermediate">Intermediate</span></div>
             <p class="ch-desc">
               Test matrix for visual correctness, performance compliance, accessibility parity, and
               theme system correctness
@@ -8056,7 +8058,7 @@ tflite_quant = converter.<span class="fn">convert</span>()
 
           <h3>GPU Vendor Test Matrix</h3>
           <p>
-            Shader compilation, floating-point precision, and texture sampling behaviour vary
+            Shader compilation, floating-point precision, and texture sampling behavior vary
             significantly across GPU vendors. The following matrix defines the minimum device
             coverage for a confident release.
           </p>
@@ -8065,11 +8067,11 @@ tflite_quant = converter.<span class="fn">convert</span>()
             <table>
               <thead>
                 <tr>
-                  <th>GPU Vendor</th>
-                  <th>Example SoC</th>
-                  <th>Driver Quirks</th>
-                  <th>Test Priority</th>
-                  <th>GLES Version</th>
+                  <th scope="col">GPU Vendor</th>
+                  <th scope="col">Example SoC</th>
+                  <th scope="col">Driver Quirks</th>
+                  <th scope="col">Test Priority</th>
+                  <th scope="col">GLES Version</th>
                 </tr>
               </thead>
               <tbody>
@@ -8264,7 +8266,7 @@ adb shell cmd thermalservice override-status 2</code></pre>
           <h3>Accessibility Contrast Audit Script</h3>
           <p>
             Automate WCAG 2.2 AA contrast verification for every bundled theme instead of relying on
-            manual colour-picker checks.
+            manual color-picker checks.
           </p>
 
           <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="an">@Test</span>
@@ -8297,10 +8299,10 @@ adb shell cmd thermalservice override-status 2</code></pre>
             <table>
               <thead>
                 <tr>
-                  <th>Phase</th>
-                  <th>Duration</th>
-                  <th>Action</th>
-                  <th>Pass Criteria</th>
+                  <th scope="col">Phase</th>
+                  <th scope="col">Duration</th>
+                  <th scope="col">Action</th>
+                  <th scope="col">Pass Criteria</th>
                 </tr>
               </thead>
               <tbody>
@@ -8397,7 +8399,7 @@ adb shell cmd thermalservice override-status 2</code></pre>
           <div class="section-break"></div>
           <div class="chapter">
             <span class="chapter-num">Section 30</span>
-            <h2>Open Source Project Index <span class="badge b-beginner">Beginner</span></h2>
+            <div class="heading-row heading-row-2"><h2>Open Source Project Index</h2><span class="badge b-beginner">Beginner</span></div>
             <p class="ch-desc">
               Complete annotated index of all referenced open source projects, rendering libraries,
               and tools
@@ -8406,7 +8408,7 @@ adb shell cmd thermalservice override-status 2</code></pre>
 
           <p class="lead">
             Every open-source project, rendering library, and tool mentioned throughout this
-            volume—indexed by category, licence, and the section where it first appears—so you can
+            volume—indexed by category, license, and the section where it first appears—so you can
             evaluate dependencies before adding them to your build.
           </p>
 
@@ -8414,10 +8416,10 @@ adb shell cmd thermalservice override-status 2</code></pre>
             <table>
               <thead>
                 <tr>
-                  <th>Project</th>
-                  <th>Category</th>
-                  <th>License</th>
-                  <th>Primary Use in this Guide</th>
+                  <th scope="col">Project</th>
+                  <th scope="col">Category</th>
+                  <th scope="col">License</th>
+                  <th scope="col">Primary Use in this Guide</th>
                 </tr>
               </thead>
               <tbody>
@@ -8427,7 +8429,7 @@ adb shell cmd thermalservice override-status 2</code></pre>
                   </td>
                   <td>Keyboard IME</td>
                   <td>Apache 2.0</td>
-                  <td>§03, §19 — Snygg theme engine architecture reference</td>
+                  <td>Sections 03, 19 — Snygg theme engine architecture reference</td>
                 </tr>
                 <tr>
                   <td>
@@ -8437,7 +8439,7 @@ adb shell cmd thermalservice override-status 2</code></pre>
                   </td>
                   <td>Keyboard IME</td>
                   <td>Apache 2.0</td>
-                  <td>§03 — 3D theme pack, external APK theme loading</td>
+                  <td>Section 03 — 3D theme pack, external APK theme loading</td>
                 </tr>
                 <tr>
                   <td>
@@ -8445,7 +8447,7 @@ adb shell cmd thermalservice override-status 2</code></pre>
                   </td>
                   <td>Keyboard IME</td>
                   <td>GPL 3.0</td>
-                  <td>§03 — LatinIME rendering pipeline, layout system</td>
+                  <td>Section 03 — LatinIME rendering pipeline, layout system</td>
                 </tr>
                 <tr>
                   <td>
@@ -8455,7 +8457,7 @@ adb shell cmd thermalservice override-status 2</code></pre>
                   </td>
                   <td>Keyboard IME</td>
                   <td>Apache 2.0</td>
-                  <td>§03 — MVVM IME architecture pattern</td>
+                  <td>Section 03 — MVVM IME architecture pattern</td>
                 </tr>
                 <tr>
                   <td>
@@ -8465,7 +8467,7 @@ adb shell cmd thermalservice override-status 2</code></pre>
                   </td>
                   <td>Custom KB</td>
                   <td>MIT</td>
-                  <td>§17 — Simplest custom keyboard starting point</td>
+                  <td>Section 17 — Simplest custom keyboard starting point</td>
                 </tr>
                 <tr>
                   <td>
@@ -8475,7 +8477,7 @@ adb shell cmd thermalservice override-status 2</code></pre>
                   </td>
                   <td>Custom KB</td>
                   <td>MIT</td>
-                  <td>§17 — Layout XML customization patterns</td>
+                  <td>Section 17 — Layout XML customization patterns</td>
                 </tr>
                 <tr>
                   <td>
@@ -8483,7 +8485,7 @@ adb shell cmd thermalservice override-status 2</code></pre>
                   </td>
                   <td>3D Renderer</td>
                   <td>Apache 2.0</td>
-                  <td>§09–§12 — Full PBR renderer, materials, IBL</td>
+                  <td>Sections 09–12 — Full PBR renderer, materials, IBL</td>
                 </tr>
                 <tr>
                   <td>
@@ -8493,7 +8495,7 @@ adb shell cmd thermalservice override-status 2</code></pre>
                   </td>
                   <td>3D/AR Lib</td>
                   <td>Apache 2.0</td>
-                  <td>§11, §25 — Filament + Compose bridge, AR keyboard</td>
+                  <td>Sections 11, 25 — Filament + Compose bridge, AR keyboard</td>
                 </tr>
                 <tr>
                   <td>
@@ -8503,7 +8505,7 @@ adb shell cmd thermalservice override-status 2</code></pre>
                   </td>
                   <td>GPU API</td>
                   <td>System</td>
-                  <td>§04–§08, §16 — Core 3D rendering, shaders, particles</td>
+                  <td>Sections 04–08, Section 16 — Core 3D rendering, shaders, particles</td>
                 </tr>
                 <tr>
                   <td>
@@ -8515,13 +8517,13 @@ adb shell cmd thermalservice override-status 2</code></pre>
                   </td>
                   <td>Game Engine</td>
                   <td>MIT</td>
-                  <td>§24 — Godot scene embedded in IME</td>
+                  <td>Section 24 — Godot scene embedded in IME</td>
                 </tr>
                 <tr>
                   <td><a href="https://www.tensorflow.org/lite" class="ext" target="_blank" rel="noopener">TensorFlow Lite</a></td>
                   <td>On-device ML</td>
                   <td>Apache 2.0</td>
-                  <td>§26 — Theme recommendation model</td>
+                  <td>Section 26 — Theme recommendation model</td>
                 </tr>
               </tbody>
             </table>
@@ -8537,7 +8539,7 @@ adb shell cmd thermalservice override-status 2</code></pre>
           <div class="section-break"></div>
           <div class="chapter">
             <span class="chapter-num">Section 31</span>
-            <h2>References &amp; Further Reading <span class="badge b-beginner">Beginner</span></h2>
+            <div class="heading-row heading-row-2"><h2>References &amp; Further Reading</h2><span class="badge b-beginner">Beginner</span></div>
             <p class="ch-desc">
               All official documentation, research sources, and tutorials consulted in this volume
             </p>
@@ -8838,6 +8840,7 @@ adb shell cmd thermalservice override-status 2</code></pre>
             </span>
             <a href="#cover" class="return-to-top-link">↑ Return to top</a>
           </div>
+        <nav class="series-links" aria-label="More guides from Made in Jurgistan"><strong>More guides in the series</strong><ul><li><a href="https://Made-in-Jurgistan.github.io/debugging-field-manual/">Debugging Field Manual</a></li><li><a href="https://Made-in-Jurgistan.github.io/mobile-stt-engineering-guide/">Mobile Speech-to-Text Engineering Guide</a></li><li><a href="https://Made-in-Jurgistan.github.io/android-keyboard-design-guide/">Android Keyboard Design Guide</a></li><li><a href="https://Made-in-Jurgistan.github.io/superclaude-field-guide/">The SuperClaude Field Guide</a></li></ul></nav>
         </footer>
         </div>
         <!-- /.content-inner -->
@@ -8884,5 +8887,24 @@ adb shell cmd thermalservice override-status 2</code></pre>
     </script>
 
 
+      <script>
+      (function () {
+        'use strict';
+        if (!navigator.clipboard) return;
+        var ico = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="8.5" y="8.5" width="12" height="12" rx="2"/><path d="M15.5 8.5V5.5a2 2 0 0 0-2-2h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h3"/></svg>';
+        document.querySelectorAll('pre > code').forEach(function (code) {
+          var pre = code.parentElement, btn = document.createElement('button');
+          btn.type = 'button'; btn.className = 'copy-btn'; btn.setAttribute('aria-label', 'Copy code to clipboard');
+          btn.innerHTML = ico + '<span>Copy</span>';
+          btn.addEventListener('click', function () {
+            navigator.clipboard.writeText(code.textContent.replace(/\n$/, '')).then(function () {
+              var label = btn.querySelector('span'); label.textContent = 'Copied';
+              setTimeout(function () { label.textContent = 'Copy'; }, 1400);
+            });
+          });
+          pre.appendChild(btn);
+        });
+      })();
+    </script>
   </body>
 </html>
