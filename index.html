@@ -33,7 +33,7 @@
     <meta property="og:locale" content="en_US" />
     <meta property="og:image" content="https://Made-in-Jurgistan.github.io/android-keyboard-design-guide-3d-personalization/cover.png" />
     <meta property="article:published_time" content="2026-01-15T00:00:00Z" />
-    <meta property="article:modified_time" content="2026-01-15T00:00:00Z" />
+    <meta property="article:modified_time" content="2026-10-07T00:00:00Z" />
     <meta property="article:section" content="Android Development" />
     <meta property="article:tag" content="Android Keyboard, IME, 3D Rendering, OpenGL ES, Filament PBR, Custom Themes" />
 
@@ -75,7 +75,7 @@
           "name": "Made in Jurgistan"
         },
         "datePublished": "2026-01-15",
-        "dateModified": "2026-01-15",
+        "dateModified": "2026-10-07",
         "version": "2026.2.0",
         "keywords": "Android keyboard, IME, 3D rendering, OpenGL ES, Filament PBR, GLSL shaders, personalization, custom themes, Jetpack Compose, Unity, Godot",
         "inLanguage": "en",
@@ -2497,7 +2497,9 @@
                 3D rendering in an IME consumes GPU resources that compete with the foreground
                 application. Every technique in this guide includes a performance budget note.
                 Always profile on low-end devices (Snapdragon 4xx, MediaTek Helio G85) before
-                shipping. See <a href="#s28">Section 28</a> for the full budget framework.
+                shipping. Android 17 also caps process memory by device RAM, so the budget covers
+                RAM as well as GPU time. See <a href="#s28">Section 28</a> for the full budget
+                framework.
               </p>
             </div>
           </div>
@@ -2573,7 +2575,16 @@
                   <td>✅</td>
                   <td>Via SurfaceView</td>
                   <td>Medium–High</td>
-                  <td>Very high-end; rarely justified for keyboards</td>
+                  <td>Maximum control, maximum effort; rarely justified for keyboards (see WebGPU below)</td>
+                </tr>
+                <tr class="api-row-34">
+                  <td><strong>WebGPU for Android</strong> (<code>androidx.webgpu</code>, alpha)</td>
+                  <td><span class="api-chip api-34">API 24+</span></td>
+                  <td>✅</td>
+                  <td>Custom WGSL</td>
+                  <td>Surface-based; you wire it up</td>
+                  <td>Comparable to Vulkan</td>
+                  <td>GPU compute and shaders shared with the web; a graphics API, not a game engine</td>
                 </tr>
                 <tr class="api-row-35">
                   <td><strong>Filament (Google PBR)</strong></td>
@@ -2601,7 +2612,8 @@
           <ol>
             <li>
               <strong>Are you targeting all Android 5+ devices?</strong> Use Canvas for base layers;
-              OpenGL ES 2.0 for 3D overlays. Avoid Vulkan and AGSL shaders for broad support.
+              OpenGL ES 2.0 for 3D overlays. Avoid Vulkan, WebGPU (still alpha), and AGSL shaders
+              for broad support.
             </li>
             <li>
               <strong>Do you need physically accurate materials</strong> (metallic keys, glass,
@@ -2633,6 +2645,71 @@
               </p>
             </div>
           </div>
+
+          <h3>Vulkan, WebGPU, and Choosing a Feature Floor</h3>
+          <p>
+            Vulkan is still Android's primary low-level graphics API, and the advice above holds:
+            it costs explicit memory management and synchronization to save milliseconds that a
+            three-row key grid rarely needs. What has changed is the layer above it. As of October
+            2026, Google ships <strong>WebGPU for Android</strong> as a Jetpack library
+            (<code>androidx.webgpu:webgpu</code>, currently <code>1.0.0-alpha05</code>, minSdk 24)
+            with Kotlin bindings and WGSL shaders. Google's documentation describes it as
+            "more approachable and significantly less verbose" than Vulkan, with copy-free buffer
+            sharing between compute and graphics work, and the Android 17 release summary lists it
+            as Kotlin and Java access to Vulkan.
+          </p>
+          <p>
+            It is not a game engine. The same page spells out that you manage your own render
+            loop, camera matrices, and scene graph, and the library is alpha, so expect breaking
+            changes before 1.0. For a keyboard that makes it a fit for GPU compute — the particle
+            simulation in <a href="#s16">Section 16</a> is the obvious candidate — or for shaders
+            you want to share with a web preview of the same theme. For PBR key materials,
+            Filament (<a href="#s09">Section 09</a>) still does far more for you.
+          </p>
+          <p>
+            If you do go to Vulkan, directly or through an engine's Vulkan renderer
+            (<a href="#s23">Sections 23</a> and <a href="#s24">24</a>), choose the feature floor
+            from the <strong>Android Vulkan Profiles</strong> (AVP) instead of probing extensions
+            one by one. Google renamed these from Android Baseline Profiles; each profile fixes a
+            set of Vulkan extensions, features, formats, and limits, and each newer profile covers
+            fewer devices:
+          </p>
+
+          <div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable table">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Profile</th>
+                  <th scope="col">Vulkan Device Support</th>
+                  <th scope="col">Keyboard Guidance</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>AVP 2021</strong></td>
+                  <td>≈ 95.5%</td>
+                  <td>Safest floor for a broad audience</td>
+                </tr>
+                <tr>
+                  <td><strong>AVP 2022</strong></td>
+                  <td>≈ 86.5%</td>
+                  <td>Reasonable for themes aimed at recent mid-range and flagship phones</td>
+                </tr>
+                <tr>
+                  <td><strong>AVP 2025</strong></td>
+                  <td>≈ 80.1%</td>
+                  <td>Flagship-leaning; always keep a fallback renderer</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p>
+            The percentages are Google's figures for active Vulkan-supporting devices as of
+            October 2025, so they exclude devices without Vulkan entirely. The Canvas fallback
+            from the hybrid architecture above remains the safety net for everyone else; check the
+            Android distribution dashboard for current numbers before you fix a floor.
+          </p>
 
           <div class="return-to-top">
             <a href="#cover">&#8593; Return to top</a>
@@ -3415,14 +3492,14 @@ GLES30.<span class="fn">glDrawArraysInstanced</span>(
             <a href="https://github.com/google/filament" class="ext" target="_blank" rel="noopener">Filament</a> is Google's
             open-source, real-time physically based rendering engine. It targets OpenGL ES 3.x class
             GPUs and is the same engine used internally in Android Studio's design preview and the
-            AR Sceneform SDK. It provides a full PBR material system, IBL lighting, shadow mapping,
+            AR Sceneform SDK (now archived — see <a href="#s25">Section 25</a>). It provides a full PBR material system, IBL lighting, shadow mapping,
             and a high-level scene graph — all in a library that loads quickly on mobile devices.
           </p>
 
           <h3>Gradle Dependencies</h3>
           <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Gradle</span><code><span class="cm">// build.gradle.kts (Module) — Filament for Android</span>
 dependencies {
-    <span class="kw">val</span> filamentVersion = <span class="str">"1.74.0"</span> <span class="cm">// Latest stable as of 2026 Q1</span>
+    <span class="kw">val</span> filamentVersion = <span class="str">"1.77.1"</span> <span class="cm">// Latest on Maven Central as of October 2026</span>
 
     <span class="cm">// Core Filament runtime</span>
     implementation(<span class="str">"com.google.android.filament:filament-android:$filamentVersion"</span>)
@@ -3436,6 +3513,26 @@ dependencies {
     <span class="cm">// Material compiler at runtime (optional — use if generating materials on device)</span>
     <span class="cm">// implementation("com.google.android.filament:filamat-android:$filamentVersion")</span>
 }</code></pre>
+
+          <div class="callout callout-info" role="note">
+            <span class="callout-icon"></span>
+            <div class="callout-body">
+              <strong>Pin One Release and Rebuild Your Materials</strong>
+              <p>
+                Keep the runtime libraries, the <code>matc</code> compiler, and your compiled
+                <code>.filamat</code> files on the same Filament release. As of October 2026 the
+                newest GitHub tag is 1.77.2 (28 September 2026) while Maven Central lists releases
+                up to 1.77.1. The release notes flag a material recompile in 1.75.0, 1.76.0, and
+                1.77.0, and 1.76.0 also changed backend async completion callbacks: they now
+                receive a <code>backend::AsyncCallStatus</code>, and a canceled call always invokes
+                its callback, which matters to any code that chains work from a completion
+                callback. Read the
+                <a href="https://github.com/google/filament/blob/main/RELEASE_NOTES.md" class="ext" target="_blank" rel="noopener">release notes</a>
+                before you bump the version, and see <a href="#s10">Section 10</a> for the newer
+                material features.
+              </p>
+            </div>
+          </div>
 
           <h3>Filament Engine Lifecycle in IME</h3>
           <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="kw">class</span> <span class="ty">FilamentKeyboardService</span> : <span class="ty">InputMethodService</span>() {
@@ -3627,6 +3724,77 @@ matc -a opengl -p mobile -o src/main/assets/key_metal.filamat key_metal.mat</cod
         .<span class="fn">build</span>(engine, renderable)
 }</code></pre>
 
+          <h3>Newer Material Features (Filament 1.76 and 1.77)</h3>
+          <p>
+            Two recent Filament releases add features that suit keycaps well. Each one changes the
+            material or engine configuration, so plan a rebuild of every <code>.filamat</code> when
+            you adopt them.
+          </p>
+
+          <div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable table">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Feature</th>
+                  <th scope="col">Added In</th>
+                  <th scope="col">What You Need To Do</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <strong>Iridescence</strong> on lit materials —
+                    <code>iridescence</code>, <code>iridescenceIor</code>,
+                    <code>iridescenceThickness</code>
+                  </td>
+                  <td>1.77.0</td>
+                  <td>
+                    Recompile all materials; the release converts the DIR variant into a
+                    specialization constant
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <strong>Second specular lobe</strong> —
+                    <code>secondRoughness</code>, <code>secondRoughnessWeight</code>
+                  </td>
+                  <td>1.76.0</td>
+                  <td>
+                    The material must declare <code>apiLevel : 2</code> or greater; useful for
+                    hazy surfaces
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Multiple directional lights</strong></td>
+                  <td>1.76.0</td>
+                  <td>
+                    Opt in with <code>Engine::Config::enableMultipleDirectionalLights</code>; the
+                    dominant light keeps shadows and the sun disc, and up to four more are
+                    evaluated without shadows (flagged as a new material version)
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Async completion callbacks</strong> take a status argument</td>
+                  <td>1.76.0</td>
+                  <td>
+                    Check <code>COMPLETED</code> versus <code>CANCELED</code> in any callback that
+                    chains further work
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p>
+            In keyboard terms, iridescence is the natural route to pearlescent or holographic
+            keycaps, and the second lobe gives a frosted spacebar a haze that a single roughness
+            value cannot. Extra directional lights let you build the three-light rig from
+            <a href="#s08">Section 08</a> without baking the fill and rim into the environment map
+            (<a href="#s12">Section 12</a>); because they are evaluated without shadows, keep the
+            shadow-casting key light as the dominant one. Every added lobe or light costs fragment
+            time, so re-measure against the budget in <a href="#s28">Section 28</a>.
+          </p>
+
           <div class="return-to-top">
             <a href="#cover">&#8593; Return to top</a>
           </div>
@@ -3649,12 +3817,14 @@ matc -a opengl -p mobile -o src/main/assets/key_metal.filamat key_metal.mat</cod
             open-source library that wraps Google Filament with a Jetpack Compose–native API,
             including a <code>rememberEngine()</code> composable, collision system, and glTF model
             loader. If your team prefers Compose over raw GL, SceneView dramatically reduces the
-            boilerplate of Sections 09 and 10.
+            boilerplate of Sections 09 and 10. It descends from the community-maintained
+            Sceneform fork, making it the maintained successor to the archived Sceneform SDK (see
+            <a href="#s25">Section 25</a>); as of October 2026 the current release is 4.52.0.
           </p>
 
           <h3>Gradle Dependency</h3>
           <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Gradle</span><code>dependencies {
-    <span class="cm">// SceneView — Filament + Compose bridge</span>
+    <span class="cm">// SceneView — Filament + Compose bridge (2.x API, as used in the listing below)</span>
     implementation(<span class="str">"io.github.sceneview:sceneview:2.2.1"</span>)
     <span class="cm">// AR variant (ARCore): io.github.sceneview:arsceneview:2.2.1</span>
 }</code></pre>
@@ -3704,6 +3874,35 @@ matc -a opengl -p mobile -o src/main/assets/key_metal.filamat key_metal.mat</cod
             }
         }
     )
+}</code></pre>
+
+          <div class="callout callout-warning" role="alert">
+            <span class="callout-icon"></span>
+            <div class="callout-body">
+              <strong>The Listing Above Uses the 2.x API; 4.x Redesigned It</strong>
+              <p>
+                SceneView changed shape between 2.2.1 and the current release. As of October 2026
+                the latest is 4.52.0 (2 October 2026), where the Compose entry point is a
+                <code>SceneView</code> composable with a node-building content block and
+                <code>rememberModelInstance</code> for loading, in place of the
+                <code>Scene(...)</code> call with explicit loaders shown above. The keyboard
+                listing here has not been ported. Treat its structure (one shared key model, one
+                node per key, press as a z-offset) as the pattern, and take the exact calls from
+                the SceneView README when you upgrade. The 4.x quick start looks like this:
+              </p>
+            </div>
+          </div>
+
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="cm">// build.gradle.kts — adapted from the SceneView 4.x README</span>
+implementation(<span class="str">"io.github.sceneview:sceneview:4.52.0"</span>)
+
+<span class="an">@Composable</span>
+<span class="kw">fun</span> <span class="fn">ModelScreen</span>() {
+    <span class="ty">SceneView</span>(modifier = <span class="ty">Modifier</span>.<span class="fn">fillMaxSize</span>()) {          <span class="cm">// orbit camera + default lighting</span>
+        <span class="fn">rememberModelInstance</span>(modelLoader, <span class="str">"models/helmet.glb"</span>)?.<span class="kw">let</span> { instance ->
+            <span class="ty">ModelNode</span>(modelInstance = instance, scaleToUnits = <span class="num">1.0f</span>, autoAnimate = <span class="kw">true</span>)
+        }
+    }
 }</code></pre>
 
           <div class="callout callout-warning" role="alert">
@@ -4484,6 +4683,79 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
     <span class="ty">Brush</span>.<span class="fn">linearGradient</span>(listOf(glowColor, <span class="ty">Color.Transparent</span>))
 }</code></pre>
 
+          <h3>Glass and Refraction Effects</h3>
+          <p>
+            "Liquid glass" key surfaces — frosted panels that blur and slightly bend whatever sits
+            behind them — are a shader pattern you can build from the pieces above. On API 33+,
+            wrap an AGSL shader in a <code>RenderEffect</code> and attach it to a Compose layer; on
+            API 31–32 fall back to a plain blur; below that, use a translucent fill. The shader
+            samples the layer's own rendered content through a <code>shader</code> uniform and
+            offsets the lookup radially, which reads as a lens.
+          </p>
+
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">AGSL</span><code><span class="cm">// Lens-style refraction: samples the layer's own content with a radial offset</span>
+<span class="kw">uniform</span> <span class="ty">shader</span> content;       <span class="cm">// The composable's rendered content (the effect's input)</span>
+<span class="kw">uniform</span> <span class="ty">float2</span> iResolution;    <span class="cm">// Layer size in px</span>
+<span class="kw">uniform</span> <span class="ty">float</span>  iStrength;      <span class="cm">// 0.0 – 0.15</span>
+
+<span class="ty">half4</span> <span class="fn">main</span>(<span class="ty">float2</span> fragCoord) {
+    <span class="ty">float2</span> uv    = fragCoord / iResolution - <span class="num">0.5</span>;
+    <span class="ty">float2</span> shift = uv * <span class="fn">dot</span>(uv, uv) * iStrength * iResolution;
+    <span class="kw">return</span> content.<span class="fn">eval</span>(fragCoord - shift);
+}</code></pre>
+
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="kw">val</span> glassShader = <span class="fn">remember</span> { <span class="ty">ShaderCompat</span>.<span class="fn">createIfSupported</span>(GLASS_AGSL) }
+
+<span class="ty">Box</span>(
+    <span class="ty">Modifier</span>.<span class="fn">graphicsLayer</span> {
+        renderEffect = <span class="kw">when</span> {
+            glassShader != <span class="kw">null</span> -> {
+                glassShader.<span class="fn">setFloatUniform</span>(<span class="str">"iResolution"</span>, size.width, size.height)
+                glassShader.<span class="fn">setFloatUniform</span>(<span class="str">"iStrength"</span>, <span class="num">0.08f</span>)
+                <span class="ty">RenderEffect</span>.<span class="fn">createRuntimeShaderEffect</span>(glassShader, <span class="str">"content"</span>)
+                    .<span class="fn">asComposeRenderEffect</span>()
+            }
+            <span class="ty">Build</span>.<span class="ty">VERSION</span>.SDK_INT >= <span class="ty">Build.VERSION_CODES.S</span> ->
+                <span class="ty">RenderEffect</span>.<span class="fn">createBlurEffect</span>(<span class="num">24f</span>, <span class="num">24f</span>, <span class="ty">Shader.TileMode.CLAMP</span>)
+                    .<span class="fn">asComposeRenderEffect</span>()
+            <span class="kw">else</span> -> <span class="kw">null</span>   <span class="cm">// API 30 and below: translucent fill, no effect</span>
+        }
+    }
+) {
+    <span class="cm">// Draw the wallpaper or background AND the keys inside this layer</span>
+}</code></pre>
+
+          <div class="callout callout-warning" role="alert">
+            <span class="callout-icon"></span>
+            <div class="callout-body">
+              <strong>Glass Only Refracts Its Own Layer</strong>
+              <p>
+                A <code>RenderEffect</code> processes the content of the layer it is attached to,
+                not whatever happens to sit behind it on screen. For frosted keys over a custom
+                background (<a href="#s20">Section 20</a>), draw that background inside the same
+                layer. Keep the layer small — a spacebar or a popup preview rather than the whole
+                keyboard — because the effect runs on every frame the layer changes. Budget it
+                with the numbers in <a href="#s28">Section 28</a>.
+              </p>
+            </div>
+          </div>
+
+          <div class="callout callout-info" role="note">
+            <span class="callout-icon"></span>
+            <div class="callout-body">
+              <strong>Third-Party Libraries Package This Pattern</strong>
+              <p>
+                Kotlin Multiplatform libraries such as
+                <a href="https://github.com/Kashif-E/KMPLiquidGlass" class="ext" target="_blank" rel="noopener">KMPLiquidGlass</a>
+                wrap the same idea. As of October 2026 its README lists basic blur from API 31,
+                advanced effects (vibrancy, lens refraction, custom shaders) from API 33, and
+                graceful degradation below API 31, and the library is published as an alpha under
+                Apache 2.0. It is not an Android API: pin a version, review the code before you
+                ship it in an IME, and keep your own fallback.
+              </p>
+            </div>
+          </div>
+
           <h3>Performance Profiling AGSL Shaders</h3>
           <div class="callout callout-info" role="note">
             <span class="callout-icon"></span>
@@ -5185,6 +5457,67 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
         followSystemColors = <span class="kw">true</span>
     ).<span class="fn">also</span> { typedArray.<span class="fn">recycle</span>() }
 }</code></pre>
+
+          <h3>Material 3 Expressive and Shape Morphing</h3>
+          <p>
+            Material 3 Expressive is Material's move toward bolder shapes, shape morphing, and
+            spring-based motion — exactly the levers a keyboard theme engine wants to expose.
+            Its status in Compose, as of October 2026: <code>androidx.compose.material3</code>
+            1.4.0 is the stable release, and 1.5.0-alpha29 (23 September 2026) is the latest
+            alpha. The expressive surface is still partly experimental. Individual pieces have
+            been promoted to stable in the 1.5.0 alphas (buttons and toggle buttons, menus, the FAB
+            and FAB menu, top and bottom app bars, and the floating toolbar, according to the
+            release notes), while the rest stays behind
+            <code>@ExperimentalMaterial3ExpressiveApi</code>.
+          </p>
+          <p>
+            A theme engine does not need that artifact to borrow the ideas. Shape morphing is
+            available today in the Jetpack <code>graphics-shapes</code> library
+            (<code>RoundedPolygon</code>, <code>CornerRounding</code>, <code>Morph</code>), and a
+            spring from <code>animateFloatAsState</code> supplies the motion. A theme can then
+            ship two key shapes and let the key morph between them on press:
+          </p>
+
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="cm">// build.gradle.kts: implementation("androidx.graphics:graphics-shapes:1.1.0")</span>
+<span class="an">@Composable</span>
+<span class="kw">fun</span> <span class="fn">MorphingKey</span>(isPressed: <span class="ty">Boolean</span>, keyColor: <span class="ty">Color</span>) {
+    <span class="kw">val</span> progress <span class="kw">by</span> <span class="fn">animateFloatAsState</span>(
+        targetValue   = <span class="kw">if</span> (isPressed) <span class="num">1f</span> <span class="kw">else</span> <span class="num">0f</span>,
+        animationSpec = <span class="fn">spring</span>(dampingRatio = <span class="ty">Spring.DampingRatioMediumBouncy</span>)
+    )
+
+    <span class="ty">Box</span>(
+        <span class="ty">Modifier</span>.<span class="fn">size</span>(<span class="num">56</span>.dp).<span class="fn">drawWithCache</span> {
+            <span class="kw">val</span> r  = size.minDimension / <span class="num">2f</span>
+            <span class="kw">val</span> cx = size.width / <span class="num">2f</span>
+            <span class="kw">val</span> cy = size.height / <span class="num">2f</span>
+            <span class="kw">val</span> rest    = <span class="ty">RoundedPolygon</span>(numVertices = <span class="num">4</span>, radius = r, centerX = cx, centerY = cy,
+                rounding = <span class="ty">CornerRounding</span>(r * <span class="num">0.35f</span>, smoothing = <span class="num">0.6f</span>))
+            <span class="kw">val</span> pressed = <span class="ty">RoundedPolygon</span>(numVertices = <span class="num">6</span>, radius = r, centerX = cx, centerY = cy,
+                rounding = <span class="ty">CornerRounding</span>(r * <span class="num">0.15f</span>))
+            <span class="kw">val</span> morph = <span class="ty">Morph</span>(start = rest, end = pressed)
+
+            <span class="fn">onDrawBehind</span> {
+                <span class="fn">drawPath</span>(morph.<span class="fn">toPath</span>(progress = progress).<span class="fn">asComposePath</span>(), keyColor)
+            }
+        }
+    )
+}</code></pre>
+
+          <div class="callout callout-warning" role="alert">
+            <span class="callout-icon"></span>
+            <div class="callout-body">
+              <strong>Hit Testing Must Match the Shape</strong>
+              <p>
+                A morphing key changes its outline while the finger is still down. Keep the touch
+                target fixed to the larger of the two shapes (see
+                <a href="#s18">Section 18</a>) so the animation never moves the edge of a key away
+                from a thumb. Do not make a shipping theme depend on
+                <code>@ExperimentalMaterial3ExpressiveApi</code> pieces without a fallback; an
+                alpha-to-alpha signature change can break your build.
+              </p>
+            </div>
+          </div>
 
           <div class="return-to-top">
             <a href="#cover">&#8593; Return to top</a>
@@ -6229,8 +6562,8 @@ animatedNoiseShader.<span class="fn">setFloatUniform</span>(<span class="str">"i
                 hacking around these assumptions and is
                 <strong>unsupported by Unity Technologies</strong>. The approach described here is
                 an advanced workaround, not an official pattern. Budget 4–6 weeks for integration
-                work, and test exhaustively across OEMs. Unity's standard LTS (2022/2023) is the
-                only version worth attempting this with.
+                work, and test exhaustively across OEMs. Stay on a Unity LTS release (2022 LTS or
+                Unity 6); other releases are not worth attempting this with.
               </p>
             </div>
           </div>
@@ -6295,6 +6628,24 @@ dependencies {
     }
 }</code></pre>
 
+          <h3>16 KB Pages and Memory Limits</h3>
+          <div class="callout callout-warning" role="alert">
+            <span class="callout-icon"></span>
+            <div class="callout-body">
+              <strong>The Unity Player Is Native Code Inside Your Keyboard APK</strong>
+              <p>
+                Google Play's 16 KB page-size requirement therefore applies to your keyboard.
+                Google's documentation says Unity has 16 KB page support for Unity 2021, 2022, and
+                Unity 6; check Unity's own release notes for the patch level you ship. The player's
+                heap also counts toward the Android 17 memory limit, which is lower while your
+                process is not visible: 1,024 MiB on a 4 GB phone against 2,048 MiB when visible.
+                Measure your baseline player footprint early. <a href="#s28">Section 28</a> covers
+                the Play deadline (confirm it in Play Console), the alignment check, and the full
+                memory table.
+              </p>
+            </div>
+          </div>
+
           <div class="return-to-top">
             <a href="#cover">&#8593; Return to top</a>
           </div>
@@ -6332,13 +6683,13 @@ dependencies {
 <span class="cm">// settings.gradle.kts</span>
 dependencyResolutionManagement {
     repositories {
-        maven { url = uri(<span class="str">"https://godot.im/releases"</span>) }
+        <span class="fn">mavenCentral</span>()  <span class="cm">// the Godot Android library is published on Maven Central</span>
     }
 }
 
 <span class="cm">// build.gradle.kts</span>
 dependencies {
-    implementation(<span class="str">"org.godotengine:godot:4.3.0.stable"</span>)
+    implementation(<span class="str">"org.godotengine:godot:4.5.2.stable"</span>)  <span class="cm">// 4.5 or newer for 16 KB-aligned libraries</span>
     implementation(files(<span class="str">"libs/keyboard_scene.aar"</span>))
 }</code></pre>
 
@@ -6566,6 +6917,31 @@ signal key_released(label: <span class="ty">String</span>)
             </li>
           </ol>
 
+          <h3>16 KB Pages and Embedding Caveats</h3>
+          <div class="callout callout-warning" role="alert">
+            <span class="callout-icon"></span>
+            <div class="callout-body">
+              <strong>Do Not Ship the Library Pinned to 4.3</strong>
+              <p>
+                Godot's issue tracker lists the 16 KB page-size warning against 4.3.stable with the
+                fix scheduled for 4.5, and Godot forum reports describe 4.4.1 builds triggering the
+                same Play warning. Use Godot 4.5 or newer (as of October 2026 Maven Central lists
+                the library up to 4.7.x), then verify the release build with the alignment check in
+                <a href="#s28">Section 28</a>. Re-check the class names in the listings above
+                against the
+                <a href="https://javadoc.io/doc/org.godotengine/godot/latest/index.html" class="ext" target="_blank" rel="noopener">library javadoc</a>
+                for the version you pin; they were written against 4.3.
+              </p>
+              <p>
+                Godot's embedding guide adds two limits that matter in an IME: only a single
+                engine instance is supported per Android process, and automatic resize or
+                orientation configuration events are unsupported and may crash the host. Plan for
+                rotation handling accordingly, and see <a href="#s02">Section 02</a> for choosing a
+                Vulkan feature floor if you enable Godot's Vulkan renderer.
+              </p>
+            </div>
+          </div>
+
           <h3>External Resources</h3>
           <ul>
             <li>
@@ -6605,8 +6981,8 @@ signal key_released(label: <span class="ty">String</span>)
             <span class="chapter-num">Section 25</span>
             <div class="heading-row heading-row-2"><h2>AR Keyboard with Sceneform</h2><span class="badge b-expert">Expert</span></div>
             <p class="ch-desc">
-              Augmented Reality keys that float in the real world — Sceneform/ARCore setup, plane
-              detection, and overlay routing for IME
+              Augmented Reality keys that float in the real world — SceneView/ARCore setup (the
+              maintained Sceneform successor), plane detection, and overlay routing for IME
             </p>
           </div>
 
@@ -6614,7 +6990,7 @@ signal key_released(label: <span class="ty">String</span>)
             An AR keyboard projects 3D keys into the camera feed, making them appear to rest on
             surfaces in the real world. This is an advanced novelty feature — not appropriate as a
             default experience — but an impressive demonstration of what's possible with the
-            Sceneform + ARCore stack integrated into an IME.
+            SceneView + ARCore stack integrated into an IME.
           </p>
 
           <div class="callout callout-warning" role="alert">
@@ -6631,8 +7007,25 @@ signal key_released(label: <span class="ty">String</span>)
             </div>
           </div>
 
-          <h3>Sceneform AR Overlay Architecture</h3>
-          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Gradle</span><code><span class="cm">// Gradle dependency</span>
+          <div class="callout callout-info" role="note">
+            <span class="callout-icon"></span>
+            <div class="callout-body">
+              <strong>Why This Chapter Still Says Sceneform</strong>
+              <p>
+                The title keeps the name most tutorials still search for, but the Sceneform SDK is
+                no longer something to build on. Google archived its repository on 28 July 2020, and
+                the README says it is no longer maintained. SceneView, the library used throughout
+                this chapter, describes itself as descending from the community-maintained
+                Sceneform fork — ARCore for perception, Filament for rendering, Jetpack Compose for
+                the API — and replaces Sceneform's deprecated <code>.sfb</code> format with
+                glTF/GLB. As of October 2026 it is at v4.52.0 (2 October 2026). Do not start a new
+                keyboard on the archived Sceneform artifacts.
+              </p>
+            </div>
+          </div>
+
+          <h3>SceneView AR Overlay Architecture</h3>
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Gradle</span><code><span class="cm">// Gradle dependency (2.x API, as used in the listings below; 4.x is covered after them)</span>
 implementation(<span class="str">"io.github.sceneview:arsceneview:2.2.1"</span>)
 
 <span class="cm">// AndroidManifest.xml additions for AR keyboard mode</span>
@@ -6668,6 +7061,39 @@ implementation(<span class="str">"io.github.sceneview:arsceneview:2.2.1"</span>)
                             <span class="fn">addChildNode</span>(<span class="fn">buildKeyboardNode</span>(plane))
                         }
                 }
+            }
+        }
+    }
+}</code></pre>
+
+          <p>
+            SceneView 4.x replaces this view-based entry point with a composable. The structure is
+            the same — wait for a horizontal plane, anchor once, hang the key nodes off the
+            anchor — but the calls differ, and the listings in this chapter have not been ported.
+            The 4.x quick start, adapted to a single key cap:
+          </p>
+
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="cm">// build.gradle.kts: implementation("io.github.sceneview:arsceneview:4.52.0")
+// (includes the 3D module) — adapted from the SceneView 4.x README</span>
+<span class="an">@Composable</span>
+<span class="kw">fun</span> <span class="fn">ARKeyCapScreen</span>() {
+    <span class="kw">var</span> anchor <span class="kw">by</span> <span class="fn">remember</span> { <span class="fn">mutableStateOf</span>&lt;<span class="ty">Anchor</span>?&gt;(<span class="kw">null</span>) }
+
+    <span class="ty">ARSceneView</span>(
+        modifier = <span class="ty">Modifier</span>.<span class="fn">fillMaxSize</span>(),
+        planeRenderer = <span class="kw">true</span>,
+        onSessionUpdated = { _, frame ->
+            <span class="kw">if</span> (anchor == <span class="kw">null</span>) {
+                anchor = frame.<span class="fn">getUpdatedPlanes</span>()
+                    .<span class="fn">firstOrNull</span> { it.type == <span class="ty">Plane.Type.HORIZONTAL_UPWARD_FACING</span> }
+                    ?.<span class="kw">let</span> { frame.<span class="fn">createAnchorOrNull</span>(it.centerPose) }
+            }
+        }
+    ) {
+        <span class="kw">val</span> keyCap = <span class="fn">rememberModelInstance</span>(modelLoader, <span class="str">"models/ar_key_cap.glb"</span>)
+        anchor?.<span class="kw">let</span> { a ->
+            <span class="ty">AnchorNode</span>(anchor = a) {
+                keyCap?.<span class="kw">let</span> { <span class="ty">ModelNode</span>(modelInstance = it, scaleToUnits = <span class="num">0.016f</span>) }
             }
         }
     }
@@ -6870,6 +7296,12 @@ implementation(<span class="str">"io.github.sceneview:arsceneview:2.2.1"</span>)
                   <td>Supported on XR headsets</td>
                 </tr>
                 <tr>
+                  <td>Maintenance (October 2026)</td>
+                  <td>Actively released; v4.52.0 (2 October 2026)</td>
+                  <td>Google's ARCore SDK</td>
+                  <td>Khronos standard; runtimes per vendor</td>
+                </tr>
+                <tr>
                   <td>Best fit</td>
                   <td>Rapid prototyping, keyboard overlays</td>
                   <td>Custom pipelines needing full control</td>
@@ -6907,13 +7339,19 @@ implementation(<span class="str">"io.github.sceneview:arsceneview:2.2.1"</span>)
             <div class="callout-body">
               <strong>Future — Hand Tracking Keyboards</strong>
               <p>
-                Android XR (announced 2024) brings hand-tracking APIs for headset-class devices. A
+                Android XR now has a developer SDK. As of October 2026 the Jetpack XR SDK's
+                SceneCore, ARCore for Jetpack XR, and XR Runtime libraries are at
+                <code>1.0.0-beta02</code> (announced August 2026), with Jetpack Compose for XR
+                still at <code>1.0.0-alpha17</code>. ARCore for Jetpack XR exposes hand tracking
+                through a <code>Hand</code> class behind a runtime permission, and Google lists it
+                for XR headsets and wired XR glasses; the SDK is not designed for phones. A
                 hand-tracked AR keyboard replaces raycasting with finger-tip collision against
                 virtual key volumes. The key placement grid in
                 <code>buildKeyboardNode()</code> already works as-is — only the input dispatch path
-                changes from screen touch → raycast to hand joint → sphere-box collision. Watch
+                changes from screen touch → raycast to hand joint → sphere-box collision. On phones,
+                hand tracking is still not available (see the table above); watch
                 <a class="ext" target="_blank" rel="noopener" href="https://developers.google.com/ar">ARCore release notes ↗</a>
-                for phone-side hand tracking availability.
+                for phone-side availability.
               </p>
             </div>
           </div>
@@ -6928,6 +7366,16 @@ implementation(<span class="str">"io.github.sceneview:arsceneview:2.2.1"</span>)
             <li>
               <a class="ext" target="_blank" rel="noopener" href="https://github.com/SceneView/sceneview-android"
                 >SceneView for Android (GitHub) ↗</a
+              >
+            </li>
+            <li>
+              <a class="ext" target="_blank" rel="noopener" href="https://developer.android.com/develop/xr"
+                >Develop with Jetpack XR SDK — Android Developers ↗</a
+              >
+            </li>
+            <li>
+              <a class="ext" target="_blank" rel="noopener" href="https://github.com/google-ar/sceneform-android-sdk"
+                >Sceneform SDK (archived) ↗</a
               >
             </li>
             <li>
@@ -6957,7 +7405,7 @@ implementation(<span class="str">"io.github.sceneview:arsceneview:2.2.1"</span>)
             <div class="heading-row heading-row-2"><h2>AI-Driven Personalization</h2><span class="badge b-expert">Expert</span></div>
             <p class="ch-desc">
               On-device ML for adaptive themes, predictive color selection, typing pattern
-              detection, and federated learning principles
+              detection, on-device language models, and federated learning principles
             </p>
           </div>
 
@@ -6965,14 +7413,18 @@ implementation(<span class="str">"io.github.sceneview:arsceneview:2.2.1"</span>)
             The next frontier of keyboard personalization uses on-device machine learning to adapt
             the keyboard's appearance to the user's context, habits, and preferences — without
             sending data off-device. This section covers practical, production-ready approaches
-            using Android's on-device ML stack.
+            using Android's on-device ML stack, from a seven-feature classifier up to the
+            on-device language models Android now offers.
           </p>
 
           <h3>Adaptive Theme Selection — TensorFlow Lite</h3>
           <p>
             A lightweight TFLite model can observe typing session features (time of day, app
             context, typing speed, error rate) and recommend a theme variant — brighter for
-            daylight, darker for night, simpler layouts when error rate is high.
+            daylight, darker for night, simpler layouts when error rate is high. Google now ships
+            this runtime as <strong>LiteRT</strong>, the successor to TensorFlow Lite; the listing
+            below uses the TensorFlow Lite artifacts, and LiteRT is where the newer accelerator
+            work (the <code>CompiledModel</code> API with GPU and NPU backends) lives.
           </p>
 
           <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Gradle</span><code><span class="cm">// Gradle</span>
@@ -7030,7 +7482,8 @@ implementation(<span class="str">"org.tensorflow:tensorflow-lite-support:0.4.4"<
     <span class="kw">init</span> {
         <span class="kw">val</span> env = <span class="ty">OrtEnvironment</span>.<span class="fn">getEnvironment</span>()
         <span class="kw">val</span> opts = <span class="ty">OrtSession.SessionOptions</span>().<span class="fn">apply</span> {
-            <span class="fn">addNnapi</span>()                    <span class="cm">// Hardware acceleration via NNAPI</span>
+            <span class="cm">// No accelerator needed: a 7-feature model runs fine on the CPU.
+            // addNnapi() still exists but NNAPI is deprecated since Android 15 — see the note below.</span>
             <span class="fn">setOptimizationLevel</span>(<span class="ty">OrtSession.SessionOptions.OptLevel.ALL_OPT</span>)
         }
         <span class="kw">val</span> modelBytes = context.assets.<span class="fn">open</span>(<span class="str">"theme_advisor.onnx"</span>).<span class="fn">readBytes</span>()
@@ -7059,6 +7512,30 @@ implementation(<span class="str">"org.tensorflow:tensorflow-lite-support:0.4.4"<
         )
     }
 }</code></pre>
+
+          <div class="callout callout-warning" role="alert">
+            <span class="callout-icon"></span>
+            <div class="callout-body">
+              <strong>NNAPI Is Deprecated — Plan the Accelerator Path</strong>
+              <p>
+                Google's NNAPI documentation says NNAPI is deprecated (since Android 15) and that
+                you can continue to use it, but that "we expect the majority of devices in the
+                future to use the CPU backend", so performance-critical workloads should migrate;
+                see the
+                <a href="https://developer.android.com/ndk/guides/neuralnetworks/migration-guide" class="ext" target="_blank" rel="noopener">NNAPI migration guide</a>.
+                For a model this small, CPU inference is the right default and nothing needs to
+                change. If you later add a heavier model, LiteRT's <code>CompiledModel</code> API
+                targets CPU, GPU, and NPU backends, with NPU support Google lists for Qualcomm,
+                MediaTek, Samsung, and Intel hardware. NPU speedups are vendor-reported, so measure
+                on your own devices. Apps that target Android 17 must also declare an NPU feature
+                in the manifest to access NPUs, according to the Android 17 summary; the
+                targeting-17 behavior-changes page does not list it, so confirm it against the
+                current
+                <a href="https://source.android.com/docs/core/perf/npu-manager" class="ext" target="_blank" rel="noopener">NPU Manager documentation</a>
+                before you document it for your team.
+              </p>
+            </div>
+          </div>
 
           <h3>Feature Extraction Pipeline</h3>
           <p>
@@ -7247,7 +7724,7 @@ tflite_quant = converter.<span class="fn">convert</span>()
               <thead>
                 <tr>
                   <th scope="col">Criterion</th>
-                  <th scope="col">TensorFlow Lite</th>
+                  <th scope="col">TensorFlow Lite / LiteRT</th>
                   <th scope="col">ONNX Runtime Mobile</th>
                   <th scope="col">PyTorch Mobile (ExecuTorch)</th>
                 </tr>
@@ -7261,8 +7738,8 @@ tflite_quant = converter.<span class="fn">convert</span>()
                 </tr>
                 <tr>
                   <td>HW delegates</td>
-                  <td>NNAPI, GPU Delegate, Hexagon DSP</td>
-                  <td>NNAPI, CoreML, XNNPACK</td>
+                  <td>GPU delegate; NPU accelerators via LiteRT (NNAPI deprecated)</td>
+                  <td>XNNPACK, CoreML; NNAPI (deprecated)</td>
                   <td>XNNPACK, Vulkan, CoreML</td>
                 </tr>
                 <tr>
@@ -7291,6 +7768,78 @@ tflite_quant = converter.<span class="fn">convert</span>()
                 </tr>
               </tbody>
             </table>
+          </div>
+
+          <h3>On-Device Language Models: Gemini Nano and LiteRT-LM</h3>
+          <p>
+            The models above are small classifiers that pick one of four themes. As of October 2026
+            Android also offers on-device language models, which supports a different kind of
+            personalization: turning a sentence such as "warm sunset, soft keys" into theme values,
+            or suggesting a name for a theme the user just saved, without a network call. Gboard's
+            own Writing Tools (proofread and rephrase) run on-device with Gemini Nano, debuted on
+            Pixel 10, and are reported to be reaching other flagship phones. Two routes are open
+            to you, and they trade control for cost differently.
+          </p>
+
+          <div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable table">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Route</th>
+                  <th scope="col">What You Get</th>
+                  <th scope="col">Constraints To Design Around</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <strong>ML Kit GenAI APIs</strong><br />Gemini Nano through AICore
+                  </td>
+                  <td>
+                    A Google-managed on-device model behind task APIs: summarization, proofreading,
+                    rewriting, image description, speech recognition, and a Prompt API for
+                    free-form prompts. You ship no weights.
+                  </td>
+                  <td>
+                    Limited device list; inference only while your app is the top foreground
+                    application, with rate limits and daily quota errors; different Gemini Nano
+                    versions can return different output for the same prompt. Check each API's
+                    current release stage.
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <strong>LiteRT and LiteRT-LM</strong><br />Your own model, your own process
+                  </td>
+                  <td>
+                    Google's on-device runtime. LiteRT-LM (v0.18.0 as of October 2026) runs language
+                    models such as Gemma, Llama, Phi-4, and Qwen on Android with GPU and NPU
+                    acceleration; its Kotlin and C++ APIs are listed as stable.
+                  </td>
+                  <td>
+                    You ship and update the weights, and they count against the Android 17 memory
+                    limit (<a href="#s28">Section 28</a>) and your APK or download size. NPU access
+                    depends on vendor accelerators.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="callout callout-warning" role="alert">
+            <span class="callout-icon"></span>
+            <div class="callout-body">
+              <strong>A Keyboard Is Not an Ordinary Foreground App</strong>
+              <p>
+                Google's ML Kit GenAI documentation permits inference only when "the app is the top
+                foreground application", and returns a background-use error otherwise. An input
+                method runs inside another app's window, so test early on a real device whether
+                calls from your keyboard process succeed, and keep the classifier above as the
+                fallback for blocked, busy, or unsupported devices. Apply the Privacy Guard rules to
+                prompts exactly as you apply them to training data: never prompt with text the
+                user typed in other apps or in password fields.
+              </p>
+            </div>
           </div>
 
           <h3>A/B Testing Theme Recommendations</h3>
@@ -7327,8 +7876,8 @@ tflite_quant = converter.<span class="fn">convert</span>()
               aggregate statistics, not individual key events.
             </li>
             <li>
-              <strong>All ML inference on-device.</strong> No data leaves the device. Use TFLite or
-              ONNX Runtime Mobile, not cloud APIs.
+              <strong>All ML inference on-device.</strong> No data leaves the device. Use LiteRT
+              (TFLite), ONNX Runtime Mobile, or Google's on-device GenAI APIs, not cloud APIs.
             </li>
             <li>
               <strong>User control first.</strong> AI recommendations are suggestions — the user's
@@ -7347,7 +7896,13 @@ tflite_quant = converter.<span class="fn">convert</span>()
           <h4>External Resources</h4>
           <ul>
             <li>
-              <a class="ext" target="_blank" rel="noopener" href="https://ai.google.dev/edge/litert">LiteRT (TensorFlow Lite) ↗</a>
+              <a class="ext" target="_blank" rel="noopener" href="https://developers.google.com/edge/litert">LiteRT (TensorFlow Lite) ↗</a>
+            </li>
+            <li>
+              <a class="ext" target="_blank" rel="noopener" href="https://github.com/google-ai-edge/LiteRT-LM">LiteRT-LM (GitHub) ↗</a>
+            </li>
+            <li>
+              <a class="ext" target="_blank" rel="noopener" href="https://developers.google.com/ml-kit/genai">ML Kit GenAI APIs ↗</a>
             </li>
             <li>
               <a class="ext" target="_blank" rel="noopener" href="https://onnxruntime.ai/docs/tutorials/mobile/"
@@ -7757,7 +8312,8 @@ tflite_quant = converter.<span class="fn">convert</span>()
             A keyboard rendering 3D effects while the user types in a heavy app (camera, AR, game)
             is competing for the GPU with that app. If your keyboard causes the foreground app to
             drop frames, users notice immediately — even if they never consciously connect it to the
-            keyboard. This section defines a strict performance contract for all 3D keyboard work.
+            keyboard. This section defines a strict performance contract for all 3D keyboard work:
+            GPU time, process memory, and native-library compatibility.
           </p>
 
           <h3>Performance Budget Framework</h3>
@@ -7793,6 +8349,131 @@ tflite_quant = converter.<span class="fn">convert</span>()
               <span class="spec-note">Use instancing to stay within</span>
             </div>
           </div>
+
+          <h3>Process Memory Budget — Android 17 Memory Limiter</h3>
+          <p>
+            The cards above budget GPU memory. Android 17 (API 37) adds a second, system-enforced
+            limit on the whole process. The Memory Limiter, a system service built on Linux cgroup
+            v2, gives every app process a soft memory ceiling and a swap ceiling based on the
+            device's total RAM, and it applies to all apps regardless of target SDK. Your engine
+            heap, decoded textures and meshes, glTF buffers, and any on-device model weights all
+            live inside that budget. The reference tiers in Google's AOSP documentation are:
+          </p>
+
+          <div class="table-wrap" tabindex="0" role="region" aria-label="Scrollable table">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Device RAM</th>
+                  <th scope="col">Visible Process</th>
+                  <th scope="col">Not Visible Process</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>4 GB</strong></td>
+                  <td>2,048&nbsp;MiB</td>
+                  <td>1,024&nbsp;MiB</td>
+                </tr>
+                <tr>
+                  <td><strong>6 GB</strong></td>
+                  <td>4,096&nbsp;MiB</td>
+                  <td>2,048&nbsp;MiB</td>
+                </tr>
+                <tr>
+                  <td><strong>8 GB</strong></td>
+                  <td>5,120&nbsp;MiB</td>
+                  <td>3,072&nbsp;MiB</td>
+                </tr>
+                <tr>
+                  <td><strong>12 GB</strong></td>
+                  <td>8,192&nbsp;MiB</td>
+                  <td>4,096&nbsp;MiB</td>
+                </tr>
+                <tr>
+                  <td><strong>16 GB</strong></td>
+                  <td>10,240&nbsp;MiB</td>
+                  <td>5,120&nbsp;MiB</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p>
+            "Visible" means the process hosts user-visible UI; background services and receivers
+            count as not visible and get the lower limit. Device makers configure the numbers
+            through a platform configuration file, so treat the table as a reference point rather
+            than a guarantee. The limits are soft: when a process crosses its ceiling the kernel
+            evicts clean file-backed pages and swaps out inactive anonymous memory, so you see
+            throttling first, and the process is terminated only if allocation keeps failing after
+            swap is exhausted.
+          </p>
+
+          <div class="callout callout-expert" role="note">
+            <span class="callout-icon"></span>
+            <div class="callout-body">
+              <strong>Budget Against the Lower Number</strong>
+              <p>
+                A keyboard process spends most of its life idle between typing sessions. Plan the
+                resident footprint — engine, shaders, textures, any model — against the "not
+                visible" figure of the smallest RAM tier you support: 1,024&nbsp;MiB on a 4 GB
+                phone. The EGL context preservation in <a href="#s05">Section 05</a> keeps GPU
+                resources alive across hide and show cycles; on small devices, decide which of
+                those resources are worth keeping while the keyboard is hidden, and measure with
+                <code>dumpsys meminfo</code> (<a href="#s29">Section 29</a>) rather than assuming
+                how your driver's allocations are accounted.
+              </p>
+            </div>
+          </div>
+
+          <p>
+            You can find out whether the limiter affected a session. The exit information reports
+            reason <code>REASON_OTHER</code> with a description that contains
+            <code>MemoryLimiter:AnonSwap</code>. Trigger-based profiling with the anomaly trigger
+            can capture a heap dump when the limit is hit.
+          </p>
+
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="cm">// Did Android 17's Memory Limiter affect a recent keyboard session?</span>
+<span class="kw">fun</span> <span class="fn">hitMemoryLimiter</span>(context: <span class="ty">Context</span>): <span class="ty">Boolean</span> {
+    <span class="kw">val</span> am = context.<span class="fn">getSystemService</span>(<span class="ty">ActivityManager</span>::<span class="kw">class</span>.java)
+    <span class="kw">return</span> am.<span class="fn">getHistoricalProcessExitReasons</span>(context.packageName, <span class="num">0</span>, <span class="num">5</span>).<span class="fn">any</span> {
+        it.reason == <span class="ty">ApplicationExitInfo.REASON_OTHER</span> &amp;&amp;
+            it.description?.<span class="fn">contains</span>(<span class="str">"MemoryLimiter:AnonSwap"</span>) == <span class="kw">true</span>
+    }
+}</code></pre>
+
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Shell</span><code><span class="cm"># Limits the device enforces right now (visible / not visible, memory and swap)</span>
+adb shell am memory-limiter status
+
+<span class="cm"># Keep the limiter from skewing a benchmark run (restore with: ignore none)</span>
+adb shell am memory-limiter ignore all
+
+<span class="cm"># Test your budget: cap one process at 1 GiB, then remove the override</span>
+adb shell am memory-limiter manual &lt;pid&gt; 1GB
+adb shell am memory-limiter manual &lt;pid&gt; none</code></pre>
+
+          <h3>16 KB Page-Size Support for Native Code</h3>
+          <p>
+            Filament, the Unity player, Godot, and the ML runtimes in
+            <a href="#s26">Section 26</a> all ship native libraries. Google Play's page-size
+            documentation says apps targeting Android 15 (API 35) or higher that include native
+            code must support 16 KB memory page sizes on 64-bit devices, and that starting
+            1&nbsp;February 2027 updates without that support cannot be released. Some secondary
+            sources cite earlier dates, so confirm the deadline in your Play Console before you plan
+            around it. Google recommends Android Gradle Plugin 8.5.1 or newer, and NDK r28 or newer
+            compiles 16 KB-aligned by default; older NDKs need linker flags such as
+            <code>-Wl,-z,max-page-size=16384</code>. Verify the release build:
+          </p>
+
+          <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Shell</span><code><span class="cm"># Expect "Verification successful" (SDK Build-Tools 35.0.0 or newer)</span>
+zipalign -c -P 16 -v 4 app-release.apk</code></pre>
+
+          <p>
+            To test behavior, boot an Android 15 or newer emulator image built for 16 KB pages, or
+            use the "Boot with 16KB page size" developer option on supported Pixel devices. For the
+            engines in this guide, see <a href="#s23">Section 23</a> (Unity) and
+            <a href="#s24">Section 24</a> (Godot, where the library version matters).
+          </p>
 
           <h3>Thermal Throttle Detection</h3>
           <pre tabindex="0" translate="no"><span class="code-lang" aria-hidden="true">Kotlin</span><code><span class="cm">// Detect thermal throttling and reduce visual quality</span>
@@ -7856,6 +8537,11 @@ tflite_quant = converter.<span class="fn">convert</span>()
             <li>No texture uploads per frame (pre-upload in onSurfaceCreated)</li>
             <li>Instanced drawing: all keys in ≤3 draw calls</li>
             <li>Particle system: compute shader, ≤256 particles, ≤1ms total</li>
+            <li>
+              Resident process memory (engine heap, textures, model weights) stays under the
+              "not visible" Memory Limiter figure for the smallest RAM tier you support
+            </li>
+            <li>Release build passes <code>zipalign -c -P 16</code> (16 KB page alignment)</li>
           </ul>
 
           <div class="return-to-top">
@@ -7934,6 +8620,28 @@ tflite_quant = converter.<span class="fn">convert</span>()
             <li>GPU frame time ≤ 2ms after 10 minutes continuous typing (thermal sustained)</li>
             <li>
               Quality degrades gracefully under thermal throttling (particles → Canvas fallback)
+            </li>
+
+            <li class="cat">Android 15–17 Platform Behavior</li>
+            <li>
+              All native libraries (engine, shaders, ML runtime) pass
+              <code>zipalign -c -P 16 -v 4</code>, and the keyboard renders correctly on a device
+              or emulator running with 16 KB pages
+            </li>
+            <li>
+              After a 30-minute typing soak the keyboard process stays under the Memory Limiter's
+              "not visible" limit for the smallest RAM tier; capping it with
+              <code>adb shell am memory-limiter manual</code> at that limit keeps working normally,
+              and no <code>MemoryLimiter:AnonSwap</code> exit appears in the exit info
+            </li>
+            <li>
+              On API 37, a rotation or unhandled configuration change follows the default IME
+              visibility instead of restoring the previous state; the 3D surface and EGL context
+              rebuild cleanly when the keyboard reappears
+            </li>
+            <li>
+              If the build targets API 37 and uses an NPU (<a href="#s26">Section 26</a>), the NPU
+              feature declaration has been checked against the current Android 17 documentation
             </li>
           </ul>
 
@@ -8137,6 +8845,12 @@ adb shell dumpsys gfxinfo com.example.keyboard reset
 
 <span class="cm"># Meminfo to detect native heap leaks from GL buffers</span>
 adb shell dumpsys meminfo com.example.keyboard | grep -E "Native|Graphics"
+
+<span class="cm"># Memory Limiter limits currently enforced (Android 17+)</span>
+adb shell am memory-limiter status
+
+<span class="cm"># On the host: verify 16 KB page alignment of the release APK</span>
+zipalign -c -P 16 -v 4 app-release.apk
 
 <span class="cm"># Force thermal throttling simulation (requires root / API 30+ emulator)</span>
 adb shell cmd thermalservice override-status 2</code></pre>
@@ -8525,6 +9239,38 @@ adb shell cmd thermalservice override-status 2</code></pre>
                   <td>Apache 2.0</td>
                   <td>Section 26 — Theme recommendation model</td>
                 </tr>
+                <tr>
+                  <td>
+                    <a href="https://github.com/google-ai-edge/LiteRT-LM" class="ext" target="_blank" rel="noopener">LiteRT-LM</a>
+                  </td>
+                  <td>On-device ML</td>
+                  <td>Apache 2.0</td>
+                  <td>Section 26 — On-device language models, GPU and NPU acceleration</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="https://developer.android.com/develop/ui/views/graphics/webgpu" class="ext" target="_blank" rel="noopener">WebGPU for Android</a>
+                  </td>
+                  <td>GPU API</td>
+                  <td>Apache 2.0</td>
+                  <td>Section 02 — Alpha Jetpack library, Kotlin bindings and WGSL shaders</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="https://developer.android.com/develop/xr" class="ext" target="_blank" rel="noopener">Jetpack XR SDK</a>
+                  </td>
+                  <td>XR / AR</td>
+                  <td>Apache 2.0</td>
+                  <td>Section 25 — SceneCore and ARCore for Jetpack XR (beta), hand tracking on XR devices</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="https://github.com/Kashif-E/KMPLiquidGlass" class="ext" target="_blank" rel="noopener">KMPLiquidGlass</a>
+                  </td>
+                  <td>UI Effects</td>
+                  <td>Apache 2.0</td>
+                  <td>Section 14 — Third-party liquid-glass effects (alpha)</td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -8612,6 +9358,83 @@ adb shell cmd thermalservice override-status 2</code></pre>
                 >developer.android.com/develop/ui/views/theming/dynamic-colors</span
               >
             </li>
+            <li>
+              <a
+                href="https://developer.android.com/develop/ui/views/graphics/webgpu"
+                class="ext ref-title"
+                >WebGPU for Android — Android Developers</a
+              ><span class="ref-url">developer.android.com/develop/ui/views/graphics/webgpu</span>
+            </li>
+            <li>
+              <a
+                href="https://developer.android.com/ndk/guides/graphics/android-vulkan-profile"
+                class="ext ref-title"
+                >Android Vulkan Profiles — Android NDK</a
+              ><span class="ref-url">developer.android.com/ndk/guides/graphics/android-vulkan-profile</span>
+            </li>
+            <li>
+              <a
+                href="https://developer.android.com/guide/practices/page-sizes"
+                class="ext ref-title"
+                >Support 16 KB Page Sizes — Android Developers</a
+              ><span class="ref-url">developer.android.com/guide/practices/page-sizes</span>
+            </li>
+            <li>
+              <a
+                href="https://source.android.com/docs/core/perf/memory-limiter"
+                class="ext ref-title"
+                >Memory Limiter — Android Open Source Project</a
+              ><span class="ref-url">source.android.com/docs/core/perf/memory-limiter</span>
+            </li>
+            <li>
+              <a
+                href="https://developer.android.com/about/versions/17/behavior-changes-all"
+                class="ext ref-title"
+                >Android 17 Behavior Changes (All Apps)</a
+              ><span class="ref-url">developer.android.com/about/versions/17/behavior-changes-all</span>
+            </li>
+            <li>
+              <a
+                href="https://developer.android.com/jetpack/androidx/releases/compose-material3"
+                class="ext ref-title"
+                >Compose Material3 Release Notes</a
+              ><span class="ref-url">developer.android.com/jetpack/androidx/releases/compose-material3</span>
+            </li>
+            <li>
+              <a
+                href="https://developer.android.com/develop/ui/compose/graphics/draw/shapes"
+                class="ext ref-title"
+                >Shapes in Compose — Shape Morphing</a
+              ><span class="ref-url">developer.android.com/develop/ui/compose/graphics/draw/shapes</span>
+            </li>
+            <li>
+              <a
+                href="https://developers.google.com/ml-kit/genai"
+                class="ext ref-title"
+                >ML Kit GenAI APIs — Gemini Nano on Android</a
+              ><span class="ref-url">developers.google.com/ml-kit/genai</span>
+            </li>
+            <li>
+              <a
+                href="https://developers.google.com/edge/litert"
+                class="ext ref-title"
+                >LiteRT — On-Device AI Runtime</a
+              ><span class="ref-url">developers.google.com/edge/litert</span>
+            </li>
+            <li>
+              <a
+                href="https://github.com/google-ai-edge/LiteRT-LM"
+                class="ext ref-title"
+                >LiteRT-LM — On-Device Language Models</a
+              ><span class="ref-url">github.com/google-ai-edge/LiteRT-LM</span>
+            </li>
+            <li>
+              <a
+                href="https://developer.android.com/ndk/guides/neuralnetworks/migration-guide"
+                class="ext ref-title"
+                >NNAPI Migration Guide — Android NDK</a
+              ><span class="ref-url">developer.android.com/ndk/guides/neuralnetworks/migration-guide</span>
+            </li>
           </ul>
 
           <h3>3D Rendering Libraries</h3>
@@ -8633,9 +9456,30 @@ adb shell cmd thermalservice override-status 2</code></pre>
             </li>
             <li>
               <a
+                href="https://github.com/google/filament/blob/main/RELEASE_NOTES.md"
+                class="ext ref-title"
+                >Filament Release Notes</a
+              ><span class="ref-url">github.com/google/filament/blob/main/RELEASE_NOTES.md</span>
+            </li>
+            <li>
+              <a
+                href="https://android-developers.googleblog.com/2026/08/jetpack-xr-sdk-core-libraries-beta.html"
+                class="ext ref-title"
+                >Jetpack XR SDK Core Libraries Reach Beta — Android Developers Blog</a
+              ><span class="ref-url">android-developers.googleblog.com — August 2026</span>
+            </li>
+            <li>
+              <a
+                href="https://developer.android.com/develop/xr/jetpack-xr-sdk/arcore/hands"
+                class="ext ref-title"
+                >Hand Tracking — ARCore for Jetpack XR</a
+              ><span class="ref-url">developer.android.com/develop/xr/jetpack-xr-sdk/arcore/hands</span>
+            </li>
+            <li>
+              <a
                 href="https://developers.google.com/sceneform/reference/com/google/ar/sceneform/rendering/FilamentEngineWrapper"
                 class="ext ref-title"
-                >Sceneform FilamentEngineWrapper Reference</a
+                >Sceneform FilamentEngineWrapper Reference (archived SDK)</a
               ><span class="ref-url">developers.google.com/sceneform/reference</span>
             </li>
           </ul>
@@ -8744,6 +9588,13 @@ adb shell cmd thermalservice override-status 2</code></pre>
                 >Unity as an Android Library — Unity Docs</a
               ><span class="ref-url">docs.unity3d.com/Manual/UnityasaLibrary-Android.html</span>
             </li>
+            <li>
+              <a
+                href="https://developer.android.com/games/engines/unity/unity-on-android"
+                class="ext ref-title"
+                >Unity on Android — 16 KB Page Support</a
+              ><span class="ref-url">developer.android.com/games/engines/unity/unity-on-android</span>
+            </li>
           </ul>
 
           <h3>OpenGL ES &amp; GLSL</h3>
@@ -8824,7 +9675,7 @@ adb shell cmd thermalservice override-status 2</code></pre>
               Systems · Full Kotlin/GLSL Code
             </p>
             <p class="footer-meta-desc" style="margin-top: 6px; font-size: 11px; color: var(--ink-400);">
-              Version 2026.2.0 · Published 2026-01-15 · Updated 2026-01-15 (ISO 8601)
+              Version 2026.2.0 · Published 2026-01-15 · Updated 2026-10-07 (ISO 8601)
             </p>
           </div>
           <div class="footer-meta">

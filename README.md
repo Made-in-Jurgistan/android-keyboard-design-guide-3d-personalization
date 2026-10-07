@@ -82,7 +82,7 @@
 ## <img src="https://api.iconify.design/lucide:sparkles.svg?color=%23b25a1a" width="20" height="20" alt="" /> Guide Features
 
 - **<img src="https://api.iconify.design/lucide:ruler.svg?color=%23b25a1a" width="16" height="16" alt="" /> Print-Ready** — A4 duplex margins, page-break controls, print-safe color resets
-- **<img src="https://api.iconify.design/lucide:file-down.svg?color=%23b25a1a" width="16" height="16" alt="" /> PDF Edition** — Bookmarked, tagged A4 PDF (130 pages) built from the same HTML, in [`pdf/`](pdf/)
+- **<img src="https://api.iconify.design/lucide:file-down.svg?color=%23b25a1a" width="16" height="16" alt="" /> PDF Edition** — Bookmarked, tagged A4 PDF (143 pages) built from the same HTML, in [`pdf/`](pdf/)
 - **<img src="https://api.iconify.design/lucide:copy.svg?color=%23b25a1a" width="16" height="16" alt="" /> One-Click Copy** — Copy button on every code block
 - **<img src="https://api.iconify.design/lucide:accessibility.svg?color=%23b25a1a" width="16" height="16" alt="" /> WCAG 2.2 AA** — Keyboard navigation, skip links, `:focus-visible` outlines, reduced-motion support, forced-colors support
 - **<img src="https://api.iconify.design/lucide:search.svg?color=%23b25a1a" width="16" height="16" alt="" /> SEO Optimized** — Open Graph, JSON-LD `TechArticle` structured data, canonical URL
@@ -113,7 +113,7 @@ python -m http.server 8000
 
 ### Download the PDF
 
-A ready-made print edition is in [`pdf/`](pdf/): [`Android_Keyboard_Design_Guide_3D_Personalization.pdf`](pdf/Android_Keyboard_Design_Guide_3D_Personalization.pdf) (130 pages, A4 portrait, bookmarked and tagged).
+A ready-made print edition is in [`pdf/`](pdf/): [`Android_Keyboard_Design_Guide_3D_Personalization.pdf`](pdf/Android_Keyboard_Design_Guide_3D_Personalization.pdf) (143 pages, A4 portrait, bookmarked and tagged).
 
 ### Print to PDF
 
@@ -153,7 +153,7 @@ Open the HTML file in Chrome/Edge → `Ctrl+P` → set paper size to A4 → enab
 |-------|-------|
 | **[Debugging Field Manual](https://Made-in-Jurgistan.github.io/debugging-field-manual/)** | Cross-platform debugging, AI-augmented workflows, 29 sections |
 | **[Mobile Speech-to-Text Engineering Guide](https://Made-in-Jurgistan.github.io/mobile-stt-engineering-guide/)** | On-device speech-to-text: audio capture, VAD, model inference, post-processing |
-| **[Android Keyboard Design Guide](https://Made-in-Jurgistan.github.io/android-keyboard-design-guide/)** | Production IME development, API 30–36, Material You 3.0 — **the primary volume** |
+| **[Android Keyboard Design Guide](https://Made-in-Jurgistan.github.io/android-keyboard-design-guide/)** | Production IME development, API 30–37, Material You 3.0 — **the primary volume** |
 | **[The SuperClaude Field Guide](https://Made-in-Jurgistan.github.io/superclaude-field-guide/)** | SuperClaude v4.3.0 for Claude Code: 30 commands, 19 specialists, MCP tools, 59 recipes |
 
 ---
@@ -165,7 +165,7 @@ Open the HTML file in Chrome/Edge → `Ctrl+P` → set paper size to A4 → enab
 | **Author** | Made in Jurgistan |
 | **Version** | 2026.2.0 |
 | **Published** | 2026-01-15 |
-| **Updated** | 2026-01-15 |
+| **Updated** | 2026-10-07 |
 | **License** | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
 | **Accessibility** | WCAG 2.2 AA |
 | **Canonical URL** | `https://Made-in-Jurgistan.github.io/android-keyboard-design-guide-3d-personalization/` |
